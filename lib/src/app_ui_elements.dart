@@ -218,17 +218,16 @@ class AppUiElements {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               spacing: 16,
               children: [
                 Row(
                   spacing: 16,
                   children: [
                     Icon(icon),
-                    Text(title, style: TextStyle(fontWeight: FontWeight.w500),),
+                    Text(title.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
                   ],
                 ),
-                Expanded(child: Container()),
                 if (functionWidget != null)
                   functionWidget
               ],
@@ -271,7 +270,7 @@ class AppUiElements {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           spacing: 16,
           children: [
-            Text(settingTitle, style: TextStyle(fontWeight: FontWeight.w500),),
+            contentWidget ?? Text(settingTitle, style: TextStyle(fontWeight: FontWeight.w500),),
             if (functionWidget != null)
               functionWidget
           ],
