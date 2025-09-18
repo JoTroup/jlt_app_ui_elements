@@ -244,6 +244,27 @@ class AppUiElements {
     );
   }
 
+  Widget settingsSubMenuRow({required String settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
+    return IgnorePointer(
+      ignoring: disableWidget ?? false,
+      child: Container(
+        foregroundDecoration: disableWidget != null && disableWidget ? BoxDecoration(
+          color: Colors.black45,
+          borderRadius: AppTheme().getAppRadius(),
+        ) : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 16,
+          children: [
+            Text(settingTitle, style: TextStyle(fontWeight: FontWeight.w500),),
+            if (functionWidget != null)
+              functionWidget
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget lottieButton({
     required BuildContext context,
     required Function onTap,
