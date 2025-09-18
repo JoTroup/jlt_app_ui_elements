@@ -258,7 +258,7 @@ class AppUiElements {
     );
   }
 
-  Widget settingsSubMenuRow({required String settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
+  Widget settingsSubMenuRow({String? settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
     return IgnorePointer(
       ignoring: disableWidget ?? false,
       child: Container(
@@ -270,7 +270,7 @@ class AppUiElements {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           spacing: 16,
           children: [
-            contentWidget ?? Text(settingTitle, style: TextStyle(fontWeight: FontWeight.w500),),
+            contentWidget ?? Text(settingTitle ?? "", style: TextStyle(fontWeight: FontWeight.w500),),
             if (functionWidget != null)
               functionWidget
           ],
