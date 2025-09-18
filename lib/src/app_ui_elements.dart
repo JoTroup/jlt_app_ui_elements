@@ -225,7 +225,7 @@ class AppUiElements {
                   spacing: 16,
                   children: [
                     Icon(icon),
-                    Text(title.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                    Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
                   ],
                 ),
                 if (functionWidget != null)
