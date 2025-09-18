@@ -9,65 +9,77 @@ class AppUiElements {
 
 
   Widget animatedNavButton({
-    required context,
+    required BuildContext context,
     required Function onTap,
     required hoverAnimationController,
+    required menuNameString,
     required lottieString,
     required setState,
+    required bool expandedMenuTitle,
+    required bool isCompactView,
     double? widthOverride,
     double? heightOverride,
-    int? selectedHightlightRightIndex,
+    int? selectedHighlightRightIndex,
   }) {
-    return Stack(
-      alignment: Alignment.centerRight,
-      children: [
-        if (selectedHightlightRightIndex != null)
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-                color: AppTheme().getPrimaryColour(),
-                borderRadius: AppTheme().getAppRadius()
+    return Material(
+      color: Colors.transparent,
+      child: Stack(
+        alignment: isCompactView ? Alignment.topCenter : Alignment.centerRight,
+        children: [
+          if (selectedHighlightRightIndex != null)
+            RotatedBox(
+              quarterTurns: isCompactView ? 1 : 0,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                decoration: BoxDecoration(color: AppTheme().getPrimaryColour(), borderRadius: AppTheme().getAppRadius()),
+                width: AppTheme().currentViewIndex == selectedHighlightRightIndex ? 3 : 0,
+                height: AppTheme().currentViewIndex == selectedHighlightRightIndex ? heightOverride ?? 32 : 0,
+                child: Column(),
+              ),
             ),
-            width: AppTheme().currentViewIndex == selectedHightlightRightIndex ? 3 : 0,
-            height: AppTheme().currentViewIndex == selectedHightlightRightIndex ? heightOverride ?? 32 : 0,
-            child: Column(
-            ),
-          ),
 
-        Padding(
-          padding: EdgeInsets.only(left: AppTheme()
-              .getAppPadding()
-              .left, right: AppTheme()
-              .getAppPadding()
-              .right, top: AppTheme()
-              .getAppPadding()
-              .top / 2, bottom: AppTheme()
-              .getAppPadding()
-              .bottom / 2),
-          child: InkWell(
+          InkWell(
             onTap: () => onTap(),
             onHover: (value) {
               if (value) {
-                hoverAnimationController.forward().then(
-                      (value) => hoverAnimationController.reset(),
-                );
+                hoverAnimationController.forward().then((value) => hoverAnimationController.reset());
               }
             },
-            child: Lottie.asset(
-              lottieString,
-              width: widthOverride ?? 32,
-              height: heightOverride ?? 32,
-              controller: hoverAnimationController,
-              onLoaded: (p0) {
-                setState(() {
-                  hoverAnimationController.duration = p0.duration;
-                });
-              },
+            child: Padding(
+              padding: EdgeInsets.only(left: AppTheme().getAppPadding().left, right: AppTheme().getAppPadding().right, top: AppTheme().getAppPadding().top / 2, bottom: AppTheme().getAppPadding().bottom / 2),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                children: [
+                  Lottie.asset(
+                    lottieString,
+                    width: widthOverride ?? 32,
+                    height: heightOverride ?? 32,
+                    controller: hoverAnimationController,
+                    onLoaded: (p0) {
+                      setState(() {
+                        hoverAnimationController.duration = p0.duration;
+                      });
+                    },
+                  ),
+                  if (expandedMenuTitle) Container(width: 10),
+                  AnimatedSize(
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    child: Container(
+                      constraints: BoxConstraints(minWidth: expandedMenuTitle ? 125 : 0, maxWidth: expandedMenuTitle ? 150 : 0),
+                      width: expandedMenuTitle ? null : 0,
+                      height: expandedMenuTitle ? null : 0,
+                      child: ClipRect(child: Text(expandedMenuTitle ? menuNameString : "")),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
