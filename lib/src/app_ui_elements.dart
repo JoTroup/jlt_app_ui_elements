@@ -244,6 +244,21 @@ class AppUiElements {
     );
   }
 
+  Widget settingsSectionHeading({required String title}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Divider(),
+        Row(
+          children: [
+            Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(fontSize: 18),),
+          ],
+        ),
+        Divider(thickness: 1, color: Colors.black26,radius: BorderRadius.circular(25)),
+      ],
+    );
+  }
+
   Widget settingsSubMenuRow({required String settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
     return IgnorePointer(
       ignoring: disableWidget ?? false,
