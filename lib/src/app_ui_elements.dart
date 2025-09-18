@@ -279,38 +279,66 @@ class AppUiElements {
     );
   }
 
-  Widget lottieButton({
-    required BuildContext context,
-    required Function onTap,
-    required lottieString,
-    required hoverAnimationController,
-    required setState,
-    double? widthOverride,
-    double? heightOverride,
-  }) {
-    return Material(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(50),
-        onTap: () => onTap(),
-        onHover: (value) {
-          if (value) {
-            hoverAnimationController.forward().then(
-                  (value) => hoverAnimationController.reset(),
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Lottie.asset(
-            lottieString,
-            width: widthOverride ?? 24,
-            height: heightOverride ?? 24,
-            controller: hoverAnimationController,
-            onLoaded: (p0) {
-              setState(() {
-                hoverAnimationController.duration = p0.duration;
-              });
-            },
+  Widget lottieButton({required BuildContext context, required Function onTap, required lottieString, required hoverAnimationController, required setState, bool bigBorderButton = false, String menuNameString = "", double? widthOverride, double? heightOverride, String? tooltipString}) {
+    return Tooltip(
+      message: tooltipString ?? "",
+      child: Material(
+        color: Colors.white,
+        borderRadius: AppTheme().primaryBorderRadius,
+
+        child: InkWell(
+          borderRadius: AppTheme().primaryBorderRadius,
+
+          onTap: () => onTap(),
+          onHover: (value) {
+            if (value) {
+              hoverAnimationController.forward().then((value) => hoverAnimationController.reset());
+            }
+          },
+          child: Container(
+            width: bigBorderButton ? 150 : 32,
+            height: bigBorderButton ? 150 : 32,
+            decoration: bigBorderButton
+                ? BoxDecoration(
+              borderRadius: AppTheme().primaryBorderRadius,
+              border: Border.all(color: Colors.black54, width: 2),
+            )
+                : BoxDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Center(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  children: [
+                    Container(
+                      width: widthOverride ?? 24,
+                      height: heightOverride ?? 24,
+                      child: Center(
+                        child: Lottie.asset(
+                          lottieString,
+                          controller: hoverAnimationController,
+                          onLoaded: (p0) {
+                            setState(() {
+                              hoverAnimationController.duration = p0.duration;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+
+                    if (menuNameString.isNotEmpty) ...[
+                      Text(
+                        menuNameString.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.black54),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
