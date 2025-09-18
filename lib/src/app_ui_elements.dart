@@ -251,7 +251,7 @@ class AppUiElements {
         Divider(),
         Row(
           children: [
-            Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(fontSize: 18),),
+            Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(fontSize: 14),),
           ],
         ),
         Divider(thickness: 1, color: Colors.black26,radius: BorderRadius.circular(25)),
