@@ -18,17 +18,10 @@ class AppUiElements {
     required void Function(VoidCallback fn) setState,
     required Widget currentMenu,
     required bool mounted,
+    required offsetAnimationPrimary,
+    required offsetAnimationSecondary,
   }) {
     bool expandedMenu = !isCompactDevice;
-    final Tween<Offset> offsetAnimationPrimary = Tween(
-        begin: const Offset(0,0),
-        end: const Offset(0,0)
-    );
-
-    final Tween<Offset> offsetAnimationSecondary = Tween(
-        begin: const Offset(0,0),
-        end: const Offset(0,0)
-    );
 
     if (isCompactDevice) {
       return Row(
