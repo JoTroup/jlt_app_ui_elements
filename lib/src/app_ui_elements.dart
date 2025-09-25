@@ -39,158 +39,6 @@ class SideBarLottieButton {
 }
 
 class AppUiElements {
-  Widget sideNavBar({
-    required SideBarController sideBarController,
-    required List<SideBarLottieButton> primaryActions,
-    required List<SideBarLottieButton> settingsActions,
-    required String logoAssetPath,
-    required String appName,
-    required BuildContext context,
-    required TickerProvider tickerProvider,
-    required Function setState,
-    required bool mounted,
-  }) {
-    if (sideBarController.isCompactDevice) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Wrap(
-            direction: Axis.vertical,
-            children: List.generate(primaryActions.length, (index) {
-              return AppUiElements().animatedNavButton(
-                context: context,
-                onTap: () {
-                  handleNavigationChange(
-                      selectedIndex: index,
-                      updateMenu: setState,
-                      replacementWidget: primaryActions[index].widget,
-                      context: context,
-                      mounted: mounted,
-                      sideBarController: sideBarController,
-                  );
-                },
-                hoverAnimationController: primaryActions[index].lottieController,
-                lottieString: primaryActions[index].lottieStringAssetPath,
-                setState: setState,
-                selectedHighlightRightIndex: index,
-                menuNameString: primaryActions[index].name,
-                expandedMenuTitle: false,
-                isCompactView: sideBarController.isCompactDevice,
-              );
-            }),
-          ),
-        ],
-      );
-    }
-
-    return Container(
-      decoration: BoxDecoration(color: Colors.white),
-      child: Column(
-        spacing: 16,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
-            child: Wrap(
-              spacing: sideBarController.isExpanded ? 16 : 0,
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                if(logoAssetPath.endsWith(".svg"))
-                  SvgPicture.asset(logoAssetPath, width: 36, height: 36)
-                else
-                  Image.asset(logoAssetPath, width: 36, height: 36),
-                AnimatedSize(
-                  duration: Duration(milliseconds: 100),
-                  child: SizedBox(
-                    width: sideBarController.isExpanded ? null : 0,
-                    child: ClipRect(
-                      child: Text(
-                        appName.toUpperCase(),
-                        overflow: TextOverflow.clip,
-                        softWrap: false,
-                        style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Expanded(child: Container()),
-
-          Wrap(
-            direction: Axis.vertical,
-            children: List.generate(primaryActions.length, (index) {
-              return AppUiElements().animatedNavButton(
-                context: context,
-                onTap: () {
-                  handleNavigationChange(
-                      selectedIndex: index,
-                      updateMenu: setState,
-                      replacementWidget: primaryActions[index].widget,
-                      context: context,
-                      mounted: mounted,
-                      sideBarController: sideBarController
-                  );
-                },
-                hoverAnimationController: primaryActions[index].lottieController,
-                lottieString: primaryActions[index].lottieStringAssetPath,
-                setState: setState,
-                selectedHighlightRightIndex: index,
-                menuNameString: primaryActions[index].name,
-                expandedMenuTitle:  sideBarController.isExpanded,
-                isCompactView:  sideBarController.isCompactDevice,
-              );
-            }),
-          ),
-
-          Expanded(child: Container()),
-
-          if (!AppTheme().getDeviceSmall())
-            Row(
-              children: [
-                Center(
-                  child: AnimatedRotation(
-                    turns: sideBarController.isExpanded ? 0 : 0.5,
-                    duration: Duration(milliseconds: 300),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          sideBarController.isExpanded = !sideBarController.isExpanded;
-                        });
-                      },
-                      icon: Icon(Icons.arrow_left, color: Colors.black38),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-          Wrap(
-            direction: Axis.vertical,
-            children: List.generate(settingsActions.length, (index) {
-              return AppUiElements().animatedNavButton(
-                context: context,
-                onTap: () {
-                  settingsActions[index].onTap!();
-                },
-                hoverAnimationController: settingsActions[index].lottieController,
-                lottieString: settingsActions[index].lottieStringAssetPath,
-                setState: setState,
-                menuNameString: settingsActions[index].name,
-                expandedMenuTitle: sideBarController.isExpanded,
-                isCompactView: sideBarController.isCompactDevice,
-              );
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// HELPER FUNCTIONS
   void handleNavigationChange({
     required SideBarController sideBarController,
@@ -802,6 +650,196 @@ class _MenuHeroWidgetState extends State<MenuHeroWidget> with TickerProviderStat
                 if (widget.functionWidget != null) widget.functionWidget!,
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SideNavBar extends StatefulWidget {
+  final SideBarController sideBarController;
+  final List<Map<String, dynamic>> primaryActions;
+  final List<Map<String, dynamic>> settingsActions;
+  final String logoAssetPath;
+  final String appName;
+  final Function setState;
+  final bool mounted;
+
+  const SideNavBar({
+    super.key,
+    required this.sideBarController,
+    required this.primaryActions,
+    required this.settingsActions,
+    required this.logoAssetPath,
+    required this.appName,
+    required this.setState,
+    required this.mounted,
+  });
+
+  @override
+  State<SideNavBar> createState() => _SideNavBarState();
+}
+
+class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
+  late List<AnimationController> primaryControllers;
+  late List<AnimationController> settingsControllers;
+
+  @override
+  void initState() {
+    super.initState();
+    primaryControllers = List.generate(widget.primaryActions.length, (_) => AnimationController(vsync: this));
+    settingsControllers = List.generate(widget.settingsActions.length, (_) => AnimationController(vsync: this));
+  }
+
+  @override
+  void dispose() {
+    for (var c in primaryControllers) { c.dispose(); }
+    for (var c in settingsControllers) { c.dispose(); }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sideBarController = widget.sideBarController;
+    if (sideBarController.isCompactDevice) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Wrap(
+            direction: Axis.vertical,
+            children: List.generate(widget.primaryActions.length, (index) {
+              final action = widget.primaryActions[index];
+              return AppUiElements().animatedNavButton(
+                context: context,
+                onTap: () {
+                  AppUiElements().handleNavigationChange(
+                    selectedIndex: index,
+                    updateMenu: widget.setState,
+                    replacementWidget: action["widget"],
+                    context: context,
+                    mounted: widget.mounted,
+                    sideBarController: sideBarController,
+                  );
+                },
+                hoverAnimationController: primaryControllers[index],
+                lottieString: action["icon"],
+                setState: widget.setState,
+                selectedHighlightRightIndex: index,
+                menuNameString: "",
+                expandedMenuTitle: false,
+                isCompactView: sideBarController.isCompactDevice,
+              );
+            }),
+          ),
+        ],
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(color: Colors.white),
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
+            child: Wrap(
+              spacing: sideBarController.isExpanded ? 16 : 0,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                if(widget.logoAssetPath.endsWith(".svg"))
+                  SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36)
+                else
+                  Image.asset(widget.logoAssetPath, width: 36, height: 36),
+                AnimatedSize(
+                  duration: Duration(milliseconds: 100),
+                  child: SizedBox(
+                    width: sideBarController.isExpanded ? null : 0,
+                    child: ClipRect(
+                      child: Text(
+                        widget.appName.toUpperCase(),
+                        overflow: TextOverflow.clip,
+                        softWrap: false,
+                        style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Expanded(child: Container()),
+
+          Wrap(
+            direction: Axis.vertical,
+            children: List.generate(widget.primaryActions.length, (index) {
+              final action = widget.primaryActions[index];
+              return AppUiElements().animatedNavButton(
+                context: context,
+                onTap: () {
+                  AppUiElements().handleNavigationChange(
+                    selectedIndex: index,
+                    updateMenu: widget.setState,
+                    replacementWidget: action["widget"],
+                    context: context,
+                    mounted: widget.mounted,
+                    sideBarController: sideBarController,
+                  );
+                },
+                hoverAnimationController: primaryControllers[index],
+                lottieString: action["icon"],
+                setState: widget.setState,
+                selectedHighlightRightIndex: index,
+                menuNameString: "",
+                expandedMenuTitle: sideBarController.isExpanded,
+                isCompactView: sideBarController.isCompactDevice,
+              );
+            }),
+          ),
+
+          Expanded(child: Container()),
+
+          if (!AppTheme().getDeviceSmall())
+            Row(
+              children: [
+                Center(
+                  child: AnimatedRotation(
+                    turns: sideBarController.isExpanded ? 0 : 0.5,
+                    duration: Duration(milliseconds: 300),
+                    child: IconButton(
+                      onPressed: () {
+                        widget.setState(() {
+                          sideBarController.isExpanded = !sideBarController.isExpanded;
+                        });
+                      },
+                      icon: Icon(Icons.arrow_left, color: Colors.black38),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+          Wrap(
+            direction: Axis.vertical,
+            children: List.generate(widget.settingsActions.length, (index) {
+              final action = widget.settingsActions[index];
+              return AppUiElements().animatedNavButton(
+                context: context,
+                onTap: () {
+                  if (action["onTap"] != null) action["onTap"]!();
+                },
+                hoverAnimationController: settingsControllers[index],
+                lottieString: action["icon"],
+                setState: widget.setState,
+                menuNameString: "",
+                expandedMenuTitle: sideBarController.isExpanded,
+                isCompactView: sideBarController.isCompactDevice,
+              );
+            }),
           ),
         ],
       ),
