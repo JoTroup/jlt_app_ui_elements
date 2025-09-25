@@ -384,60 +384,6 @@ class AppUiElements {
     );
   }
 
-  Widget menuHeroWidget({required BuildContext context, required TickerProvider tickerProvider, String? lottieAsset, required String title, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
-    AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
-
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return ClipRRect(
-          borderRadius: AppTheme().getAppRadius().copyWith(bottomLeft: Radius.zero, bottomRight: Radius.zero),
-          clipBehavior: Clip.hardEdge,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              RotatedBox(
-                quarterTurns: 2,
-                child: WavesWidget(
-                  amplitude: 5,
-                  size: Size(double.infinity, 90),
-
-                  waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
-                ),
-              ),
-              Padding(
-                padding: AppTheme().getAppPadding().copyWith(top: 0, bottom: 8),
-                child: Row(
-                  spacing: 16,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ColorFiltered(
-                      colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                      child: Lottie.asset(
-                        lottieAsset ?? "assets/lotties/main-account.json",
-                        controller: hoverAnimationController,
-                        width: 32,
-                        height: 32,
-                        onLoaded: (p0) {
-                          hoverAnimationController.duration = p0.duration;
-                          hoverAnimationController.reset();
-                          hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
-                    ),
-                    if (functionWidget != null) functionWidget,
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   InputDecoration settingsFormFieldDecoration({required String labelText, String? hintText}) {
     return InputDecoration(floatingLabelBehavior: FloatingLabelBehavior.always, label: Text(labelText), hintText: hintText);
   }
