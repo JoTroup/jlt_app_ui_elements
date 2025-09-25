@@ -5,8 +5,6 @@ import 'package:jlt_app_theme_handler/jlt_app_theme_handler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wave_widget/wave_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/services.dart';
 
 class SideBarController {
   static final SideBarController _instance = SideBarController._internal();
@@ -499,7 +497,7 @@ class AppUiElements {
     );
   }
 
-  InputDecoration settingsFormFieldDecoration({required labelText, String? hintText}) {
+  InputDecoration settingsFormFieldDecoration({required String labelText, String? hintText}) {
     return InputDecoration(floatingLabelBehavior: FloatingLabelBehavior.always, label: Text(labelText), hintText: hintText);
   }
 
@@ -603,7 +601,7 @@ class AppUiElements {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   runAlignment: WrapAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: widthOverride ?? 24,
                       height: heightOverride ?? 24,
                       child: Center(
@@ -636,9 +634,9 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> confirmActionDialog({required context, required tickerProvider, String? message}) {
+  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
-    TextEditingController passcodeController = TextEditingController();
+    //TextEditingController passcodeController = TextEditingController();
 
     return showDialog<bool>(
       context: context,
@@ -689,7 +687,7 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> genericDialog({required context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, String? title, Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
+  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, String? title, Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
 
     return showDialog<bool>(
@@ -735,7 +733,7 @@ class AppUiElements {
     );
   }
 
-  Widget getKeyboardWidget({required setState, required fieldController, required Function submit, bool numericOnly = true, bool unboundConstraints = false, bool keyboardTypeToggle = false}) {
+  Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool unboundConstraints = false, bool keyboardTypeToggle = false}) {
     return _CustomKeyboardWidget(tenderEntryController: fieldController, submit: submit, numericOnly: numericOnly, unboundConstraints: unboundConstraints, keyboardTypeToggle: keyboardTypeToggle);
   }
 
@@ -751,7 +749,7 @@ class _CustomKeyboardWidget extends StatefulWidget {
   final bool numericOnly;
   final bool unboundConstraints;
   final bool keyboardTypeToggle;
-  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, super.key, required this.unboundConstraints, required this.keyboardTypeToggle});
+  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, required this.unboundConstraints, required this.keyboardTypeToggle});
 
   @override
   State<_CustomKeyboardWidget> createState() => _CustomKeyboardWidgetState();
