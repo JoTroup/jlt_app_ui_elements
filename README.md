@@ -1,12 +1,15 @@
 # jlt_app_ui_elements
 
-A Flutter package providing default app UI elements for the JLT software suite. Includes animated navigation buttons and integrates with the JLT theme handler for consistent styling.
+A Flutter package providing default app UI elements for the JLT software suite. Includes animated navigation buttons, a customizable sidebar navigation bar, and integrates with the JLT theme handler for consistent styling.
 
 ## Features
 
 - Animated navigation button with Lottie animation support
+- Sidebar navigation bar supporting compact and expanded layouts
 - Theme integration via [jlt_app_theme_handler](https://github.com/JoTroup/jlt_app_theme_handler)
-- Customizable highlight and padding
+- SVG asset support
+- Wave widget integration
+- Customizable highlight, padding, and menu titles
 - Easily extendable for additional UI elements
 
 ## Getting started
@@ -23,12 +26,13 @@ Run `flutter pub get` to install dependencies.
 
 ## Usage
 
-Import the package and use the `AppUiElements` class:
+Import the package and use the `AppUiElements` class and `SideBarController`:
 
 ```dart
 import 'package:jlt_app_ui_elements/jlt_app_ui_elements.dart';
 
 final appUi = AppUiElements();
+final sideBarController = SideBarController();
 
 Widget navButton = appUi.animatedNavButton(
   context: context,
@@ -38,7 +42,24 @@ Widget navButton = appUi.animatedNavButton(
   setState: setState,
   widthOverride: 40,
   heightOverride: 40,
-  selectedHightlightRightIndex: 1,
+  selectedHighlightRightIndex: 1,
+);
+
+Widget sideNavBar = appUi.sideNavBar(
+  sideBarController: sideBarController,
+  primaryActions: [
+    {
+      "widget": MyPageWidget(),
+      "controller": AnimationController(vsync: this),
+      "icon": "assets/animation.json",
+    },
+    // Add more actions as needed
+  ],
+  settingsActions: [],
+  context: context,
+  tickerProvider: this,
+  setState: setState,
+  mounted: mounted,
 );
 ```
 
@@ -50,4 +71,5 @@ See the `/example` folder for a complete usage example.
 
 - This package is designed for use with the JLT software suite.
 - For theme customization, see [jlt_app_theme_handler](https://github.com/JoTroup/jlt_app_theme_handler).
+- Supports SVG and Wave widgets for advanced UI effects.
 - Contributions and issues are welcome!
