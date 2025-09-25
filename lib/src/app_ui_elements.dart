@@ -13,6 +13,7 @@ class AppUiElements {
     required List<Map<String, dynamic>> primaryActions,
     required List<Map<String, dynamic>> settingsActions,
     required bool isCompactDevice,
+    required bool expandedMenu,
     required BuildContext context,
     required TickerProvider tickerProvider,
     required void Function(VoidCallback fn) setState,
@@ -21,8 +22,6 @@ class AppUiElements {
     required offsetAnimationPrimary,
     required offsetAnimationSecondary,
   }) {
-    bool expandedMenu = !isCompactDevice;
-
     if (isCompactDevice) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +113,7 @@ class AppUiElements {
                 lottieString: primaryActions[index]["icon"],
                 setState: setState,
                 selectedHighlightRightIndex: index,
-                menuNameString: "",
+                menuNameString: primaryActions[index]["name"],
                 expandedMenuTitle: expandedMenu,
                 isCompactView: isCompactDevice,
               );
@@ -149,22 +148,13 @@ class AppUiElements {
               return AppUiElements().animatedNavButton(
                 context: context,
                 onTap: () {
-                  handleNavigationChange(
-                      selectedIndex: index,
-                      updateMenu: setState,
-                      replacementWidget: primaryActions[index]["widget"],
-                      context: context,
-                      mounted: mounted,
-                      currentMenu: currentMenu,
-                      offsetAnimationPrimary: offsetAnimationPrimary,
-                      offsetAnimationSecondary: offsetAnimationSecondary
-                  );
+                  settingsActions[index]["action"]();
                 },
-                hoverAnimationController: primaryActions[index]["controller"],
-                lottieString: primaryActions[index]["icon"],
+                hoverAnimationController: settingsActions[index]["controller"],
+                lottieString: settingsActions[index]["icon"],
                 setState: setState,
                 selectedHighlightRightIndex: index,
-                menuNameString: "",
+                menuNameString: settingsActions[index]["name"],
                 expandedMenuTitle: expandedMenu,
                 isCompactView: isCompactDevice,
               );
