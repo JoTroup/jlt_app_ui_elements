@@ -28,11 +28,21 @@ class SideBarController {
   );
 }
 
+class SideBarLottieButton {
+  final String name;
+  final String lottieStringAssetPath;
+  Widget widget = Container();
+  Function? onTap;
+  final AnimationController lottieController;
+
+  SideBarLottieButton({required this.name, required this.lottieStringAssetPath, required this.widget, required this.lottieController, this.onTap});
+}
+
 class AppUiElements {
   Widget sideNavBar({
     required SideBarController sideBarController,
-    required List<Map<String, dynamic>> primaryActions,
-    required List<Map<String, dynamic>> settingsActions,
+    required List<SideBarLottieButton> primaryActions,
+    required List<SideBarLottieButton> settingsActions,
     required String svgLogoAssetPath,
     required String appName,
     required BuildContext context,
@@ -53,17 +63,17 @@ class AppUiElements {
                   handleNavigationChange(
                       selectedIndex: index,
                       updateMenu: setState,
-                      replacementWidget: primaryActions[index]["widget"],
+                      replacementWidget: primaryActions[index].widget,
                       context: context,
                       mounted: mounted,
                       sideBarController: sideBarController,
                   );
                 },
-                hoverAnimationController: primaryActions[index]["controller"],
-                lottieString: primaryActions[index]["icon"],
+                hoverAnimationController: primaryActions[index].lottieController,
+                lottieString: primaryActions[index].lottieStringAssetPath,
                 setState: setState,
                 selectedHighlightRightIndex: index,
-                menuNameString: "",
+                menuNameString: primaryActions[index].name,
                 expandedMenuTitle: false,
                 isCompactView: sideBarController.isCompactDevice,
               );
@@ -117,17 +127,17 @@ class AppUiElements {
                   handleNavigationChange(
                       selectedIndex: index,
                       updateMenu: setState,
-                      replacementWidget: primaryActions[index]["widget"],
+                      replacementWidget: primaryActions[index].widget,
                       context: context,
                       mounted: mounted,
                       sideBarController: sideBarController
                   );
                 },
-                hoverAnimationController: primaryActions[index]["controller"],
-                lottieString: primaryActions[index]["icon"],
+                hoverAnimationController: primaryActions[index].lottieController,
+                lottieString: primaryActions[index].lottieStringAssetPath,
                 setState: setState,
                 selectedHighlightRightIndex: index,
-                menuNameString: primaryActions[index]["name"],
+                menuNameString: primaryActions[index].name,
                 expandedMenuTitle:  sideBarController.isExpanded,
                 isCompactView:  sideBarController.isCompactDevice,
               );
@@ -162,12 +172,12 @@ class AppUiElements {
               return AppUiElements().animatedNavButton(
                 context: context,
                 onTap: () {
-                  settingsActions[index]["action"]();
+                  settingsActions[index].onTap ?? () {};
                 },
-                hoverAnimationController: settingsActions[index]["controller"],
-                lottieString: settingsActions[index]["icon"],
+                hoverAnimationController: settingsActions[index].lottieController,
+                lottieString: settingsActions[index].lottieStringAssetPath,
                 setState: setState,
-                menuNameString: settingsActions[index]["name"],
+                menuNameString: settingsActions[index].name,
                 expandedMenuTitle: sideBarController.isExpanded,
                 isCompactView: sideBarController.isCompactDevice,
               );
