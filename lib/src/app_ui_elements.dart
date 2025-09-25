@@ -43,7 +43,7 @@ class AppUiElements {
     required SideBarController sideBarController,
     required List<SideBarLottieButton> primaryActions,
     required List<SideBarLottieButton> settingsActions,
-    required String svgLogoAssetPath,
+    required String logoAssetPath,
     required String appName,
     required BuildContext context,
     required TickerProvider tickerProvider,
@@ -97,7 +97,10 @@ class AppUiElements {
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                SvgPicture.asset(svgLogoAssetPath, width: 36, height: 36),
+                if(logoAssetPath.endsWith(".svg"))
+                  SvgPicture.asset(logoAssetPath, width: 36, height: 36)
+                else
+                  Image.asset(logoAssetPath, width: 36, height: 36),
                 AnimatedSize(
                   duration: Duration(milliseconds: 100),
                   child: SizedBox(
