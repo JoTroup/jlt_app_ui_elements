@@ -145,7 +145,7 @@ class AppUiElements {
 
           Wrap(
             direction: Axis.vertical,
-            children: List.generate(primaryActions.length, (index) {
+            children: List.generate(settingsActions.length, (index) {
               return AppUiElements().animatedNavButton(
                 context: context,
                 onTap: () {
