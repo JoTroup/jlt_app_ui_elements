@@ -658,8 +658,8 @@ class _MenuHeroWidgetState extends State<MenuHeroWidget> with TickerProviderStat
 
 class SideNavBar extends StatefulWidget {
   final SideBarController sideBarController;
-  final List<Map<String, dynamic>> primaryActions;
-  final List<Map<String, dynamic>> settingsActions;
+  final List<SideBarLottieButton> primaryActions;
+  final List<SideBarLottieButton> settingsActions;
   final String logoAssetPath;
   final String appName;
   final Function setState;
@@ -715,14 +715,14 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                   AppUiElements().handleNavigationChange(
                     selectedIndex: index,
                     updateMenu: widget.setState,
-                    replacementWidget: action["widget"],
+                    replacementWidget: action.widget,
                     context: context,
                     mounted: widget.mounted,
                     sideBarController: sideBarController,
                   );
                 },
                 hoverAnimationController: primaryControllers[index],
-                lottieString: action["icon"],
+                lottieString: action.lottieStringAssetPath,
                 setState: widget.setState,
                 selectedHighlightRightIndex: index,
                 menuNameString: "",
@@ -783,14 +783,14 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                   AppUiElements().handleNavigationChange(
                     selectedIndex: index,
                     updateMenu: widget.setState,
-                    replacementWidget: action["widget"],
+                    replacementWidget: action.widget,
                     context: context,
                     mounted: widget.mounted,
                     sideBarController: sideBarController,
                   );
                 },
                 hoverAnimationController: primaryControllers[index],
-                lottieString: action["icon"],
+                lottieString: action.lottieStringAssetPath,
                 setState: widget.setState,
                 selectedHighlightRightIndex: index,
                 menuNameString: "",
@@ -829,10 +829,10 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
               return AppUiElements().animatedNavButton(
                 context: context,
                 onTap: () {
-                  if (action["onTap"] != null) action["onTap"]!();
+                  if (action.onTap != null) action.onTap!();
                 },
                 hoverAnimationController: settingsControllers[index],
-                lottieString: action["icon"],
+                lottieString: action.lottieStringAssetPath,
                 setState: widget.setState,
                 menuNameString: "",
                 expandedMenuTitle: sideBarController.isExpanded,
