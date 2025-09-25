@@ -56,9 +56,6 @@ class AppUiElements {
                       replacementWidget: primaryActions[index]["widget"],
                       context: context,
                       mounted: mounted,
-                      currentMenu: sideBarController.currentMenu,
-                      offsetAnimationPrimary: sideBarController.offsetAnimationPrimary,
-                      offsetAnimationSecondary: sideBarController.offsetAnimationSecondary,
                       sideBarController: sideBarController,
                   );
                 },
@@ -123,9 +120,6 @@ class AppUiElements {
                       replacementWidget: primaryActions[index]["widget"],
                       context: context,
                       mounted: mounted,
-                      currentMenu: sideBarController.currentMenu,
-                      offsetAnimationPrimary: sideBarController.offsetAnimationPrimary,
-                      offsetAnimationSecondary: sideBarController.offsetAnimationSecondary,
                       sideBarController: sideBarController
                   );
                 },
@@ -189,12 +183,9 @@ class AppUiElements {
     required SideBarController sideBarController,
     required BuildContext context,
     required int selectedIndex,
-    required currentMenu,
     required Widget replacementWidget,
     required Function? updateMenu,
     required bool mounted,
-    required offsetAnimationPrimary,
-    required offsetAnimationSecondary,
     bool forceDisableAnimation = false,
   }) {
 
@@ -216,8 +207,8 @@ class AppUiElements {
     }
     AppTheme().currentViewIndex = selectedIndex;
 
-    offsetAnimationPrimary = Tween<Offset>(begin: offsetPrimary, end: Offset.zero);
-    offsetAnimationSecondary = Tween<Offset>(begin: Offset.zero, end: offsetSecondary);
+    sideBarController.offsetAnimationPrimary = Tween<Offset>(begin: offsetPrimary, end: Offset.zero);
+    sideBarController.offsetAnimationSecondary = Tween<Offset>(begin: Offset.zero, end: offsetSecondary);
 
     sideBarController.currentMenu = disableAnimation == false
         ? PageTransitionSwitcher(
@@ -226,9 +217,9 @@ class AppUiElements {
               return Align(
                 alignment: Alignment.topCenter,
                 child: SlideTransition(
-                  position: offsetAnimationPrimary.animate(CurvedAnimation(parent: primaryAnimation, curve: Curves.fastEaseInToSlowEaseOut)),
+                  position: sideBarController.offsetAnimationPrimary.animate(CurvedAnimation(parent: primaryAnimation, curve: Curves.fastEaseInToSlowEaseOut)),
                   child: SlideTransition(
-                    position: offsetAnimationSecondary.animate(CurvedAnimation(parent: secondaryAnimation, curve: Curves.fastEaseInToSlowEaseOut)),
+                    position: sideBarController.offsetAnimationSecondary.animate(CurvedAnimation(parent: secondaryAnimation, curve: Curves.fastEaseInToSlowEaseOut)),
                     child: child,
                   ),
                 ),
