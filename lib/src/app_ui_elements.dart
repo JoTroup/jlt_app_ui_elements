@@ -33,9 +33,8 @@ class SideBarLottieButton {
   final String lottieStringAssetPath;
   Widget widget = Container();
   Function? onTap;
-  final AnimationController lottieController;
 
-  SideBarLottieButton({required this.name, required this.lottieStringAssetPath, required this.widget, required this.lottieController, this.onTap});
+  SideBarLottieButton({required this.name, required this.lottieStringAssetPath, required this.widget, this.onTap});
 }
 
 class AppUiElements {
