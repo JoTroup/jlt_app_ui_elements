@@ -1,6 +1,6 @@
 name: jlt_app_ui_elements
 description: "A package that contains default app elements for JLT software suite."
-version: 0.2.1
+version: 0.2.2
 publish_to: none
 
 homepage:

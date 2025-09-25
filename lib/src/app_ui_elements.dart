@@ -35,6 +35,8 @@ class AppUiElements {
     required SideBarController sideBarController,
     required List<Map<String, dynamic>> primaryActions,
     required List<Map<String, dynamic>> settingsActions,
+    required String svgLogoAssetPath,
+    required String appName,
     required BuildContext context,
     required TickerProvider tickerProvider,
     required Function setState,
@@ -87,14 +89,14 @@ class AppUiElements {
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                SvgPicture.asset("assets/ob_logo.svg", width: 36, height: 36),
+                SvgPicture.asset(svgLogoAssetPath, width: 36, height: 36),
                 AnimatedSize(
                   duration: Duration(milliseconds: 100),
                   child: SizedBox(
                     width: sideBarController.isExpanded ? null : 0,
                     child: ClipRect(
                       child: Text(
-                        "EasyLister".toUpperCase(),
+                        appName.toUpperCase(),
                         overflow: TextOverflow.clip,
                         softWrap: false,
                         style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.w600),
