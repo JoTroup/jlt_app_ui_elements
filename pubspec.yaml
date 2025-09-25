@@ -1,12 +1,12 @@
 name: jlt_app_ui_elements
 description: "A package that contains default app elements for JLT software suite."
-version: 0.0.8
+version: 0.1.1
 publish_to: none
 
 homepage:
 
 environment:
-  sdk: ^3.10.0-213.0.dev
+  sdk: 3.9.2
   flutter: ">=1.17.0"
 
 dependencies:
@@ -15,6 +15,9 @@ dependencies:
 
   lottie: ^3.3.1
   wave_widget: ^0.1.0+1
+  flutter_svg: ^2.2.1
+  animations: ^2.0.11
+
 
   jlt_app_theme_handler:
     git:
