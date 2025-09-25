@@ -8,21 +8,39 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
+class SideBarController {
+  static final SideBarController _instance = SideBarController._internal();
+  factory SideBarController() => _instance;
+  SideBarController._internal();
+
+  bool isExpanded = true;
+  bool isCompactDevice = false;
+
+
+  Widget currentMenu = Container();
+
+  Tween<Offset> offsetAnimationPrimary = Tween(
+      begin: const Offset(0,0),
+      end: const Offset(0,0)
+  );
+
+  Tween<Offset> offsetAnimationSecondary = Tween(
+      begin: const Offset(0,0),
+      end: const Offset(0,0)
+  );
+}
+
 class AppUiElements {
   Widget sideNavBar({
+    required SideBarController sideBarController,
     required List<Map<String, dynamic>> primaryActions,
     required List<Map<String, dynamic>> settingsActions,
-    required bool isCompactDevice,
-    required bool expandedMenu,
     required BuildContext context,
     required TickerProvider tickerProvider,
-    required void Function(VoidCallback fn) setState,
-    required Widget currentMenu,
+    required Function setState,
     required bool mounted,
-    required offsetAnimationPrimary,
-    required offsetAnimationSecondary,
   }) {
-    if (isCompactDevice) {
+    if (sideBarController.isCompactDevice) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -38,9 +56,10 @@ class AppUiElements {
                       replacementWidget: primaryActions[index]["widget"],
                       context: context,
                       mounted: mounted,
-                      currentMenu: currentMenu,
-                      offsetAnimationPrimary: offsetAnimationPrimary,
-                      offsetAnimationSecondary: offsetAnimationSecondary,
+                      currentMenu: sideBarController.currentMenu,
+                      offsetAnimationPrimary: sideBarController.offsetAnimationPrimary,
+                      offsetAnimationSecondary: sideBarController.offsetAnimationSecondary,
+                      sideBarController: sideBarController,
                   );
                 },
                 hoverAnimationController: primaryActions[index]["controller"],
@@ -49,7 +68,7 @@ class AppUiElements {
                 selectedHighlightRightIndex: index,
                 menuNameString: "",
                 expandedMenuTitle: false,
-                isCompactView: isCompactDevice,
+                isCompactView: sideBarController.isCompactDevice,
               );
             }),
           ),
@@ -65,9 +84,9 @@ class AppUiElements {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: expandedMenu ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
+            padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
             child: Wrap(
-              spacing: expandedMenu ? 16 : 0,
+              spacing: sideBarController.isExpanded ? 16 : 0,
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
@@ -75,7 +94,7 @@ class AppUiElements {
                 AnimatedSize(
                   duration: Duration(milliseconds: 100),
                   child: SizedBox(
-                    width: expandedMenu ? null : 0,
+                    width: sideBarController.isExpanded ? null : 0,
                     child: ClipRect(
                       child: Text(
                         "EasyLister".toUpperCase(),
@@ -104,9 +123,10 @@ class AppUiElements {
                       replacementWidget: primaryActions[index]["widget"],
                       context: context,
                       mounted: mounted,
-                      currentMenu: currentMenu,
-                      offsetAnimationPrimary: offsetAnimationPrimary,
-                      offsetAnimationSecondary: offsetAnimationSecondary
+                      currentMenu: sideBarController.currentMenu,
+                      offsetAnimationPrimary: sideBarController.offsetAnimationPrimary,
+                      offsetAnimationSecondary: sideBarController.offsetAnimationSecondary,
+                      sideBarController: sideBarController
                   );
                 },
                 hoverAnimationController: primaryActions[index]["controller"],
@@ -114,8 +134,8 @@ class AppUiElements {
                 setState: setState,
                 selectedHighlightRightIndex: index,
                 menuNameString: primaryActions[index]["name"],
-                expandedMenuTitle: expandedMenu,
-                isCompactView: isCompactDevice,
+                expandedMenuTitle:  sideBarController.isExpanded,
+                isCompactView:  sideBarController.isCompactDevice,
               );
             }),
           ),
@@ -127,12 +147,12 @@ class AppUiElements {
               children: [
                 Center(
                   child: AnimatedRotation(
-                    turns: expandedMenu ? 0 : 0.5,
+                    turns: sideBarController.isExpanded ? 0 : 0.5,
                     duration: Duration(milliseconds: 300),
                     child: IconButton(
                       onPressed: () {
                         setState(() {
-                          expandedMenu = !expandedMenu;
+                          sideBarController.isExpanded = !sideBarController.isExpanded;
                         });
                       },
                       icon: Icon(Icons.arrow_left, color: Colors.black38),
@@ -153,10 +173,9 @@ class AppUiElements {
                 hoverAnimationController: settingsActions[index]["controller"],
                 lottieString: settingsActions[index]["icon"],
                 setState: setState,
-                selectedHighlightRightIndex: index,
                 menuNameString: settingsActions[index]["name"],
-                expandedMenuTitle: expandedMenu,
-                isCompactView: isCompactDevice,
+                expandedMenuTitle: sideBarController.isExpanded,
+                isCompactView: sideBarController.isCompactDevice,
               );
             }),
           ),
@@ -167,8 +186,10 @@ class AppUiElements {
 
   /// HELPER FUNCTIONS
   void handleNavigationChange({
+    required SideBarController sideBarController,
     required BuildContext context,
-    required int selectedIndex, required currentMenu,
+    required int selectedIndex,
+    required currentMenu,
     required Widget replacementWidget,
     required Function? updateMenu,
     required bool mounted,
@@ -198,7 +219,7 @@ class AppUiElements {
     offsetAnimationPrimary = Tween<Offset>(begin: offsetPrimary, end: Offset.zero);
     offsetAnimationSecondary = Tween<Offset>(begin: Offset.zero, end: offsetSecondary);
 
-    currentMenu = disableAnimation == false
+    sideBarController.currentMenu = disableAnimation == false
         ? PageTransitionSwitcher(
             child: returnContent,
             transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
