@@ -384,53 +384,57 @@ class AppUiElements {
     );
   }
 
-  ClipRRect menuHeroWidget({required BuildContext context, required TickerProvider tickerProvider, String? lottieAsset, required String title, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
+  Widget menuHeroWidget({required BuildContext context, required TickerProvider tickerProvider, String? lottieAsset, required String title, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
 
-    return ClipRRect(
-      borderRadius: AppTheme().getAppRadius().copyWith(bottomLeft: Radius.zero, bottomRight: Radius.zero),
-      clipBehavior: Clip.hardEdge,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          RotatedBox(
-            quarterTurns: 2,
-            child: WavesWidget(
-              amplitude: 5,
-              size: Size(double.infinity, 90),
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return ClipRRect(
+          borderRadius: AppTheme().getAppRadius().copyWith(bottomLeft: Radius.zero, bottomRight: Radius.zero),
+          clipBehavior: Clip.hardEdge,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              RotatedBox(
+                quarterTurns: 2,
+                child: WavesWidget(
+                  amplitude: 5,
+                  size: Size(double.infinity, 90),
 
-              waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
-            ),
-          ),
-          Padding(
-            padding: AppTheme().getAppPadding().copyWith(top: 0, bottom: 8),
-            child: Row(
-              spacing: 16,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                  child: Lottie.asset(
-                    lottieAsset ?? "assets/lotties/main-account.json",
-                    controller: hoverAnimationController,
-                    width: 32,
-                    height: 32,
-                    onLoaded: (p0) {
-                      hoverAnimationController.duration = p0.duration;
-                      hoverAnimationController.reset();
-                      hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                    },
-                  ),
+                  waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
                 ),
-                Expanded(
-                  child: Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
+              ),
+              Padding(
+                padding: AppTheme().getAppPadding().copyWith(top: 0, bottom: 8),
+                child: Row(
+                  spacing: 16,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      child: Lottie.asset(
+                        lottieAsset ?? "assets/lotties/main-account.json",
+                        controller: hoverAnimationController,
+                        width: 32,
+                        height: 32,
+                        onLoaded: (p0) {
+                          hoverAnimationController.duration = p0.duration;
+                          hoverAnimationController.reset();
+                          hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
+                    ),
+                    if (functionWidget != null) functionWidget,
+                  ],
                 ),
-                if (functionWidget != null) functionWidget,
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -772,6 +776,89 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class MenuHeroWidget extends StatefulWidget {
+  final String? lottieAsset;
+  final String title;
+  final Widget? functionWidget;
+  final Widget? contentWidget;
+  final bool? disableWidget;
+
+  const MenuHeroWidget({
+    super.key,
+    this.lottieAsset,
+    required this.title,
+    this.functionWidget,
+    this.contentWidget,
+    this.disableWidget,
+  });
+
+  @override
+  State<MenuHeroWidget> createState() => _MenuHeroWidgetState();
+}
+
+class _MenuHeroWidgetState extends State<MenuHeroWidget> with TickerProviderStateMixin {
+  late AnimationController hoverAnimationController;
+
+  @override
+  void initState() {
+    super.initState();
+    hoverAnimationController = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    hoverAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: AppTheme().getAppRadius().copyWith(bottomLeft: Radius.zero, bottomRight: Radius.zero),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          RotatedBox(
+            quarterTurns: 2,
+            child: WavesWidget(
+              amplitude: 5,
+              size: Size(double.infinity, 90),
+              waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
+            ),
+          ),
+          Padding(
+            padding: AppTheme().getAppPadding().copyWith(top: 0, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  child: Lottie.asset(
+                    widget.lottieAsset ?? "assets/lotties/main-account.json",
+                    controller: hoverAnimationController,
+                    width: 32,
+                    height: 32,
+                    onLoaded: (p0) {
+                      hoverAnimationController.duration = p0.duration;
+                      hoverAnimationController.reset();
+                      hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: Text(widget.title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
+                ),
+                if (widget.functionWidget != null) widget.functionWidget!,
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
