@@ -13,7 +13,7 @@ class SideBarController {
   factory SideBarController() => _instance;
   SideBarController._internal();
 
-  bool isExpanded = true;
+  bool isExpanded = false;
   bool isCompactDevice = false;
 
 
