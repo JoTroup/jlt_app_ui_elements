@@ -172,7 +172,7 @@ class AppUiElements {
               return AppUiElements().animatedNavButton(
                 context: context,
                 onTap: () {
-                  settingsActions[index].onTap ?? () {};
+                  settingsActions[index].onTap!();
                 },
                 hoverAnimationController: settingsActions[index].lottieController,
                 lottieString: settingsActions[index].lottieStringAssetPath,
@@ -320,81 +320,6 @@ class AppUiElements {
     );
   }
 
-  /*  Widget animatedNavButton({
-    required BuildContext context,
-    required Function onTap,
-    required hoverAnimationController,
-    required menuNameString,
-    required lottieString,
-    required setState,
-    required bool expandedMenuTitle,
-    required bool isCompactView,
-    double? widthOverride,
-    double? heightOverride,
-    int? selectedHighlightRightIndex,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: Stack(
-        alignment: isCompactView ? Alignment.topCenter : Alignment.centerRight,
-        children: [
-          if (selectedHighlightRightIndex != null)
-            RotatedBox(
-              quarterTurns: isCompactView ? 1 : 0,
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                decoration: BoxDecoration(color: AppTheme().getPrimaryColour(), borderRadius: AppTheme().getAppRadius()),
-                width: AppTheme().currentViewIndex == selectedHighlightRightIndex ? 3 : 0,
-                height: AppTheme().currentViewIndex == selectedHighlightRightIndex ? heightOverride ?? 32 : 0,
-                child: Column(),
-              ),
-            ),
-
-          InkWell(
-            onTap: () => onTap(),
-            onHover: (value) {
-              if (value) {
-                hoverAnimationController.forward().then((value) => hoverAnimationController.reset());
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: AppTheme().getAppPadding().left, right: AppTheme().getAppPadding().right, top: AppTheme().getAppPadding().top / 2, bottom: AppTheme().getAppPadding().bottom / 2),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
-                children: [
-                  Lottie.asset(
-                    lottieString,
-                    width: widthOverride ?? 32,
-                    height: heightOverride ?? 32,
-                    controller: hoverAnimationController,
-                    onLoaded: (p0) {
-                      setState(() {
-                        hoverAnimationController.duration = p0.duration;
-                      });
-                    },
-                  ),
-                  if (expandedMenuTitle) Container(width: 10),
-                  AnimatedSize(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                    child: Container(
-                      constraints: BoxConstraints(minWidth: expandedMenuTitle ? 125 : 0, maxWidth: expandedMenuTitle ? 150 : 0),
-                      width: expandedMenuTitle ? null : 0,
-                      height: expandedMenuTitle ? null : 0,
-                      child: ClipRect(child: Text(expandedMenuTitle ? menuNameString : "")),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
-
   void showUserDetailsDialog({required BuildContext context, required tickerProvider, required void Function(VoidCallback fn) setState, required Widget contentOverride, List<Widget>? overrideActions}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
     showDialog(
@@ -411,7 +336,6 @@ class AppUiElements {
                 child: WavesWidget(
                   amplitude: 5,
                   size: Size(double.infinity, 60),
-
                   waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
                 ),
               ),
