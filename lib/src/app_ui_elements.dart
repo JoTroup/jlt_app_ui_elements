@@ -285,7 +285,7 @@ class AppUiElements {
     );
   }
 
-  Widget settingsSubMenuRow({String? settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
+  Widget settingsSubMenuRow({String? settingTitle, Widget? functionWidget, Widget? contentWidget, bool? disableWidget, bool? isFuture}) {
     return IgnorePointer(
       ignoring: disableWidget ?? false,
       child: Container(
@@ -421,7 +421,7 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, String? title, Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
+  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, String? title, String? description,Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
 
     return showDialog<bool>(
@@ -437,21 +437,31 @@ class AppUiElements {
               children: [
                 Padding(
                   padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
-                  child: Row(
-                    spacing: 16,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 8,
                     children: [
-                      Lottie.asset(
-                        lottieIconOverride ?? "assets/lotties/main-check.json",
-                        controller: hoverAnimationController,
-                        width: iconSizeOverride ?? 32,
-                        height: iconSizeOverride ?? 32,
-                        onLoaded: (p0) {
-                          hoverAnimationController.duration = p0.duration;
-                          hoverAnimationController.reset();
-                          hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                        },
+                      Row(
+                        spacing: 16,
+                        children: [
+                          Lottie.asset(
+                            lottieIconOverride ?? "assets/lotties/main-check.json",
+                            controller: hoverAnimationController,
+                            width: iconSizeOverride ?? 32,
+                            height: iconSizeOverride ?? 32,
+                            onLoaded: (p0) {
+                              hoverAnimationController.duration = p0.duration;
+                              hoverAnimationController.reset();
+                              hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                            },
+                          ),
+                          Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
+                        ],
                       ),
-                      Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
+
+                      if (description != null) ...[
+                        Text(description),
+                      ]
                     ],
                   ),
                 ),
