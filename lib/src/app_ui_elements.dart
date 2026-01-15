@@ -446,7 +446,7 @@ class AppUiElements {
                         children: [
                           if(closeIcon == true)
                             InkWell(
-                              onTap: () => Navigator.of(context).pop(),
+                              onTap: () => Navigator.of(context).pop(false),
                               child: Icon(Icons.close, size: 24, color: Colors.black54),
                             ),
 
