@@ -421,7 +421,7 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, String? title, String? description,Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
+  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, bool? closeIcon,  String? title, String? description,Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
 
     return showDialog<bool>(
@@ -444,6 +444,12 @@ class AppUiElements {
                       Row(
                         spacing: 16,
                         children: [
+                          if(closeIcon == true)
+                            InkWell(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Icon(Icons.close, size: 24, color: Colors.black54),
+                            ),
+
                           Lottie.asset(
                             lottieIconOverride ?? "assets/lotties/main-check.json",
                             controller: hoverAnimationController,
