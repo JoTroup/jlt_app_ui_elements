@@ -584,7 +584,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
                     backgroundColor: AppTheme().getPrimaryBackgroundColour(),
                   ),
                   onPressed: () => onKeyboardTap(char),
-                  child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18)),
+                  child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18), overflow: TextOverflow.clip),
                 ),
               );
             },
@@ -593,10 +593,10 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         Row(
           spacing: 16,
           children: [
-            if (widget.keyboardTypeToggle) ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC')),
+            if (widget.keyboardTypeToggle) ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)),
             ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
             Expanded(child: Container()),
-            ElevatedButton(onPressed: onSubmit, child: Text('Submit')),
+            ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip)),
           ],
         ),
       ],
