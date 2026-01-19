@@ -421,7 +421,20 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> genericDialog({required BuildContext context, required tickerProvider, String? lottieIconOverride, double? iconSizeOverride, bool? closeIcon,  String? title, String? description,Widget? contentOverride, List<Widget>? overrideActions, bool? automaticallyPop, double? widthOverride}) {
+  Future<bool?> genericDialog({
+    required BuildContext context,
+    required tickerProvider,
+    String? lottieIconOverride,
+    double? iconSizeOverride,
+    bool? closeIcon,
+    String? title,
+    String? description,
+    Widget? contentOverride,
+    List<Widget>? overrideActions,
+    MainAxisAlignment? actionAlignment,
+    double? actionSpacing,
+    bool? automaticallyPop,
+    double? widthOverride}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
 
     return showDialog<bool>(
@@ -474,7 +487,7 @@ class AppUiElements {
 
                 Flexible(child: SingleChildScrollView(child: contentOverride ?? Text(title ?? ""))),
 
-                if (overrideActions != null) Row(mainAxisAlignment: MainAxisAlignment.center, children: overrideActions),
+                if (overrideActions != null) Row(spacing: actionSpacing ?? 8, mainAxisAlignment: actionAlignment ?? MainAxisAlignment.center, children: overrideActions),
               ],
             ),
           ),
