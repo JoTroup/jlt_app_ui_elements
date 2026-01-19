@@ -598,10 +598,10 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
               spacing: 16,
               children: [
                 if (widget.keyboardTypeToggle)
-                  ClipRect(child: ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))),
+                  ClipRect(child: ElevatedButton(onPressed: switchKeyboard, child: ClipRect(child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)))),
                 ClipRect(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
                 Expanded(child: Container()),
-                ClipRect(child: ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip))),
+                ClipRect(child: ElevatedButton(onPressed: onSubmit, child: ClipRect(child: Text('Submit', overflow: TextOverflow.clip)))),
               ],
             ),
           ),
