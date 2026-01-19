@@ -595,29 +595,39 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
           Row(
             children: [
               Expanded(
-                child: Row(
+                child: Wrap(
+                  clipBehavior: Clip.hardEdge,
                   spacing: 16,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runAlignment: WrapAlignment.spaceBetween,
+                  runSpacing: 16,
                   children: [
-                    if (widget.keyboardTypeToggle)
-                      ElevatedButton(
-                          onPressed: switchKeyboard, 
-                          child: ClipRect(
-                              child: Container(
-                                  child: Expanded(child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))
+                    Wrap(
+                      clipBehavior: Clip.hardEdge,
+                      spacing: 16,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        if (widget.keyboardTypeToggle)
+                          ElevatedButton(
+                              onPressed: switchKeyboard,
+                              child: ClipRect(
+                                  child: Container(
+                                      child: Expanded(child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))
+                                  )
                               )
-                          )
-                      ),
-                    ClipRect(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
-                    Expanded(child: Container()),
+                          ),
+                        ClipRect(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
+                      ],
+                    ),
                     ElevatedButton(
-                        onPressed: onSubmit, 
+                        onPressed: onSubmit,
                         child: ClipRect(
                             child: Expanded(child: Text('Submit', overflow: TextOverflow.clip))
                         )
                     )
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ],
