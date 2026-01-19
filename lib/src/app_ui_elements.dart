@@ -594,18 +594,15 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
           ),
           ClipRect(
             clipBehavior: Clip.hardEdge,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                spacing: 16,
-                children: [
-                  if (widget.keyboardTypeToggle)
-                    ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)),
-                  ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                  Expanded(child: Container()),
-                  ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip)),
-                ],
-              ),
+            child: Row(
+              spacing: 16,
+              children: [
+                if (widget.keyboardTypeToggle)
+                  ClipRect(child: ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))),
+                ClipRect(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
+                Expanded(child: Container()),
+                ClipRect(child: ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip))),
+              ],
             ),
           ),
         ],
