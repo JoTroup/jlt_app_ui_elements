@@ -590,14 +590,14 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
             },
           ),
         ),
-        Wrap(
-          clipBehavior: Clip.hardEdge,
+        Row(
           spacing: 16,
           children: [
-            if (widget.keyboardTypeToggle) ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)),
-            ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+            if (widget.keyboardTypeToggle)
+              Flexible(child: ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))),
+            Flexible(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
             Expanded(child: Container()),
-            ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip)),
+            Flexible(child: ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip))),
           ],
         ),
       ],
