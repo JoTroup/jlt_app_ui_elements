@@ -562,45 +562,51 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     isQwerty = !widget.numericOnly;
     final characters = isQwerty ? qwertyCharacters : numericCharacters;
     final itemsPerRow = isQwerty ? 10 : 3;
-    return Column(
-      spacing: 32,
-      children: [
-        Container(
-          constraints: BoxConstraints(maxWidth: isQwerty ? 900 : 300, minWidth: isQwerty ? 600 : 200, maxHeight: 400),
-          child: GridView.builder(
-            shrinkWrap: true,
+    return ClipRect(
+      clipBehavior: Clip.hardEdge,
+      child: Column(
+        spacing: 32,
+        children: [
+          Container(
+            constraints: BoxConstraints(maxWidth: isQwerty ? 900 : 300, minWidth: isQwerty ? 600 : 200, maxHeight: 400),
+            child: GridView.builder(
+              shrinkWrap: true,
 
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: itemsPerRow, childAspectRatio: 1.5),
-            itemCount: characters.length,
-            itemBuilder: (context, index) {
-              final char = characters[index];
-              if (char.isEmpty) return SizedBox.shrink();
-              return Padding(
-                padding: EdgeInsets.all(isQwerty ? 2 : 4.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    backgroundColor: AppTheme().getPrimaryBackgroundColour(),
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: itemsPerRow, childAspectRatio: 1.5),
+              itemCount: characters.length,
+              itemBuilder: (context, index) {
+                final char = characters[index];
+                if (char.isEmpty) return SizedBox.shrink();
+                return Padding(
+                  padding: EdgeInsets.all(isQwerty ? 2 : 4.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      backgroundColor: AppTheme().getPrimaryBackgroundColour(),
+                    ),
+                    onPressed: () => onKeyboardTap(char),
+                    child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18), overflow: TextOverflow.clip),
                   ),
-                  onPressed: () => onKeyboardTap(char),
-                  child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18), overflow: TextOverflow.clip),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-        Row(
-          spacing: 16,
-          children: [
-            if (widget.keyboardTypeToggle)
-              Flexible(child: ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))),
-            Flexible(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
-            Expanded(child: Container()),
-            Flexible(child: ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip))),
-          ],
-        ),
-      ],
+          ClipRect(
+            clipBehavior: Clip.hardEdge,
+            child: Row(
+              spacing: 16,
+              children: [
+                if (widget.keyboardTypeToggle)
+                  ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)),
+                ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                Expanded(child: Container()),
+                ElevatedButton(onPressed: onSubmit, child: Text('Submit', overflow: TextOverflow.clip)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
