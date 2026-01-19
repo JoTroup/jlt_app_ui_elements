@@ -590,7 +590,8 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
             },
           ),
         ),
-        Row(
+        Wrap(
+          clipBehavior: Clip.hardEdge,
           spacing: 16,
           children: [
             if (widget.keyboardTypeToggle) ElevatedButton(onPressed: switchKeyboard, child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)),
