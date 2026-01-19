@@ -424,6 +424,7 @@ class AppUiElements {
   Future<bool?> genericDialog({
     required BuildContext context,
     required tickerProvider,
+    bool disableIcon = false,
     String? lottieIconOverride,
     double? iconSizeOverride,
     bool? closeIcon,
@@ -463,17 +464,18 @@ class AppUiElements {
                               child: Icon(Icons.close, size: 24, color: Colors.black54),
                             ),
 
-                          Lottie.asset(
-                            lottieIconOverride ?? "assets/lotties/main-check.json",
-                            controller: hoverAnimationController,
-                            width: iconSizeOverride ?? 32,
-                            height: iconSizeOverride ?? 32,
-                            onLoaded: (p0) {
-                              hoverAnimationController.duration = p0.duration;
-                              hoverAnimationController.reset();
-                              hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                            },
-                          ),
+                          if (disableIcon == false)
+                            Lottie.asset(
+                              lottieIconOverride ?? "assets/lotties/main-check.json",
+                              controller: hoverAnimationController,
+                              width: iconSizeOverride ?? 32,
+                              height: iconSizeOverride ?? 32,
+                              onLoaded: (p0) {
+                                hoverAnimationController.duration = p0.duration;
+                                hoverAnimationController.reset();
+                                hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                              },
+                            ),
                           Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
                         ],
                       ),
