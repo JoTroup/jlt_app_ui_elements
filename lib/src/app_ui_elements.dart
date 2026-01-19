@@ -592,41 +592,29 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
               },
             ),
           ),
-          Row(
+          Wrap(
+            clipBehavior: Clip.hardEdge,
+            spacing: 16,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runAlignment: WrapAlignment.spaceBetween,
+            runSpacing: 16,
             children: [
-              Expanded(
-                child: Wrap(
-                  clipBehavior: Clip.hardEdge,
-                  spacing: 16,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  runAlignment: WrapAlignment.spaceBetween,
-                  runSpacing: 16,
-                  children: [
-                    Wrap(
-                      clipBehavior: Clip.hardEdge,
-                      spacing: 16,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        if (widget.keyboardTypeToggle)
-                          ElevatedButton(
-                              onPressed: switchKeyboard,
-                              child: ClipRect(
-                                  child: Container(
-                                      child: Expanded(child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip))
-                                  )
-                              )
-                          ),
-                        ClipRect(child: ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace))),
-                      ],
-                    ),
+              Wrap(
+                clipBehavior: Clip.hardEdge,
+                spacing: 16,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  if (widget.keyboardTypeToggle)
                     ElevatedButton(
-                        onPressed: onSubmit,
-                        child: ClipRect(
-                            child: Expanded(child: Text('Submit', overflow: TextOverflow.clip))
-                        )
-                    )
-                  ],
-                ),
+                        onPressed: switchKeyboard,
+                        child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+                    ),
+                  ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                ],
+              ),
+              ElevatedButton(
+                  onPressed: onSubmit,
+                  child: Text('Submit', overflow: TextOverflow.clip)
               )
             ],
           ),
