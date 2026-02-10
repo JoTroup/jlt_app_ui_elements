@@ -576,7 +576,6 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
             //constraints: BoxConstraints(maxWidth: isQwerty ? 900 : 300, minWidth: isQwerty ? 600 : 200, maxHeight: 400),
             child: GridView.builder(
               shrinkWrap: true,
-
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: itemsPerRow, childAspectRatio: 1.5),
               itemCount: characters.length,
@@ -597,17 +596,14 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
               },
             ),
           ),
-          Wrap(
-            clipBehavior: Clip.hardEdge,
+          Row(
             spacing: 16,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            runAlignment: WrapAlignment.spaceBetween,
-            runSpacing: 16,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Wrap(
-                clipBehavior: Clip.hardEdge,
+              Row(
                 spacing: 16,
-                crossAxisAlignment: WrapCrossAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (widget.keyboardTypeToggle)
                     ElevatedButton(
