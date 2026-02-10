@@ -13,9 +13,10 @@ class SideBarController {
 
   bool isExpanded = false;
   bool isCompactDevice = false;
+  int currentViewIndex = 0;
 
 
-  Widget currentMenu = Container();
+  ValueNotifier<Widget> currentMenu = ValueNotifier(Container());
 
   Tween<Offset> offsetAnimationPrimary = Tween(
       begin: const Offset(0,0),
@@ -26,6 +27,9 @@ class SideBarController {
       begin: const Offset(0,0),
       end: const Offset(0,0)
   );
+
+
+
 }
 
 class SideBarLottieButton {
@@ -70,10 +74,11 @@ class AppUiElements {
     sideBarController.offsetAnimationPrimary = Tween<Offset>(begin: offsetPrimary, end: Offset.zero);
     sideBarController.offsetAnimationSecondary = Tween<Offset>(begin: Offset.zero, end: offsetSecondary);
 
-    sideBarController.currentMenu = disableAnimation == false
+    sideBarController.currentMenu.value = disableAnimation == false
         ? PageTransitionSwitcher(
             child: returnContent,
             transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
+              sideBarController.currentViewIndex = selectedIndex;
               return Align(
                 alignment: Alignment.topCenter,
                 child: SlideTransition(
@@ -714,6 +719,7 @@ class SideNavBar extends StatefulWidget {
   final String logoAssetPath;
   final String appName;
   final Function setState;
+  final bool isExpandable;
   final bool mounted;
 
   const SideNavBar({
@@ -725,6 +731,7 @@ class SideNavBar extends StatefulWidget {
     required this.appName,
     required this.setState,
     required this.mounted,
+    this.isExpandable = true,
   });
 
   @override
@@ -853,7 +860,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
 
           Expanded(child: Container()),
 
-          if (!AppTheme().getDeviceSmall())
+          if (!AppTheme().getDeviceSmall() && widget.isExpandable)
             Row(
               children: [
                 Center(
