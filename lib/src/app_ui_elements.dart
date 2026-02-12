@@ -454,7 +454,7 @@ class AppUiElements {
               mainAxisSize: MainAxisSize.min,
               spacing: 16,
               children: [
-                if (closeIcon == false || disableIcon != false || title != null)
+                if (closeIcon == true || disableIcon != false || title != null)
                   Padding(
                     padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
                     child: Column(
