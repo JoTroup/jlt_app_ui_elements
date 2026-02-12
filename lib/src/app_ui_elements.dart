@@ -430,6 +430,7 @@ class AppUiElements {
     required BuildContext context,
     required tickerProvider,
     bool disableIcon = false,
+    bool disableHeading = false,
     String? lottieIconOverride,
     double? iconSizeOverride,
     bool? closeIcon,
@@ -454,7 +455,7 @@ class AppUiElements {
               mainAxisSize: MainAxisSize.min,
               spacing: 16,
               children: [
-                if (closeIcon == true || disableIcon != false || title != null)
+                if (disableHeading == false)
                   Padding(
                     padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
                     child: Column(
