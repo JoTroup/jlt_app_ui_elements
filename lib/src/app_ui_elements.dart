@@ -454,43 +454,44 @@ class AppUiElements {
               mainAxisSize: MainAxisSize.min,
               spacing: 16,
               children: [
-                Padding(
-                  padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 8,
-                    children: [
-                      Row(
-                        spacing: 16,
-                        children: [
-                          if(closeIcon == true)
-                            InkWell(
-                              onTap: () => Navigator.of(context).pop(false),
-                              child: Icon(Icons.close, size: 24, color: Colors.black54),
-                            ),
+                if (closeIcon == false || disableIcon != false || title != null)
+                  Padding(
+                    padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 8,
+                      children: [
+                        Row(
+                          spacing: 16,
+                          children: [
+                            if(closeIcon == true)
+                              InkWell(
+                                onTap: () => Navigator.of(context).pop(false),
+                                child: Icon(Icons.close, size: 24, color: Colors.black54),
+                              ),
 
-                          if (disableIcon == false)
-                            Lottie.asset(
-                              lottieIconOverride ?? "assets/lotties/main-check.json",
-                              controller: hoverAnimationController,
-                              width: iconSizeOverride ?? 32,
-                              height: iconSizeOverride ?? 32,
-                              onLoaded: (p0) {
-                                hoverAnimationController.duration = p0.duration;
-                                hoverAnimationController.reset();
-                                hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                              },
-                            ),
-                          Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
-                        ],
-                      ),
+                            if (disableIcon == false)
+                              Lottie.asset(
+                                lottieIconOverride ?? "assets/lotties/main-check.json",
+                                controller: hoverAnimationController,
+                                width: iconSizeOverride ?? 32,
+                                height: iconSizeOverride ?? 32,
+                                onLoaded: (p0) {
+                                  hoverAnimationController.duration = p0.duration;
+                                  hoverAnimationController.reset();
+                                  hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                                },
+                              ),
+                            Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
+                          ],
+                        ),
 
-                      if (description != null) ...[
-                        Text(description),
-                      ]
-                    ],
+                        if (description != null) ...[
+                          Text(description),
+                        ]
+                      ],
+                    ),
                   ),
-                ),
 
                 Flexible(child: SingleChildScrollView(child: contentOverride ?? Text(title ?? ""))),
 
