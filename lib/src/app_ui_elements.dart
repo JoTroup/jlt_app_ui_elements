@@ -575,7 +575,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         spacing: 32,
         children: [
           Container(
-            //constraints: BoxConstraints(maxWidth: isQwerty ? 900 : 300, minWidth: isQwerty ? 600 : 200, maxHeight: 400),
+            constraints: BoxConstraints(maxHeight: 400),
             child: GridView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
