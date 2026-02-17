@@ -581,10 +581,10 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
 
     Widget buildGrid(BoxConstraints constraints) {
       final rows = (characters.length / itemsPerRow).ceil();
-      final gridWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite
+      final gridWidth = constraints.maxWidth.isFinite
           ? constraints.maxWidth
           : MediaQuery.of(context).size.width;
-      final gridHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite
+      final gridHeight = constraints.maxHeight.isFinite
           ? constraints.maxHeight
           : 400.0;
       final cellWidth = (gridWidth - (itemsPerRow - 1) * spacing) / itemsPerRow;
@@ -622,34 +622,41 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final hasBoundedHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
-        final hasBoundedWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite;
-
-        final maxWidth = hasBoundedWidth
+        // Compute concrete dimensions from constraints
+        final maxWidth = constraints.maxWidth.isFinite
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
-        final availableHeight = hasBoundedHeight ? constraints.maxHeight : 400.0;
-        final gridHeight = max(100.0, availableHeight - footerHeight - columnSpacing);
+        final maxHeight = constraints.maxHeight.isFinite
+            ? constraints.maxHeight
+            : 400.0;
+
+        // Ensure we always have positive dimensions
+        final safeWidth = max(100.0, maxWidth);
+        final safeHeight = max(footerHeight + columnSpacing + 100.0, maxHeight);
+        final gridHeight = max(100.0, safeHeight - footerHeight - columnSpacing);
 
         final gridConstraints = BoxConstraints.tightFor(
-          width: maxWidth,
+          width: safeWidth,
           height: gridHeight,
         );
 
-        return SizedBox(
-          width: maxWidth,
-          height: availableHeight,
+        return ConstrainedBox(
+          constraints: BoxConstraints.tightFor(
+            width: safeWidth,
+            height: safeHeight,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                 height: gridHeight,
-                width: maxWidth,
+                width: safeWidth,
                 child: buildGrid(gridConstraints),
               ),
               SizedBox(height: columnSpacing),
               SizedBox(
                 height: footerHeight,
+                width: safeWidth,
                 child: Row(
                   spacing: 16,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -658,6 +665,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
                     Row(
                       spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         if (widget.keyboardTypeToggle)
                           ElevatedButton(
