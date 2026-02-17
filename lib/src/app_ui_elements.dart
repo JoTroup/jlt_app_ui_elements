@@ -506,15 +506,13 @@ class AppUiElements {
   }
 
   Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool unboundConstraints = false, bool keyboardTypeToggle = false}) {
-    final keyboard = _CustomKeyboardWidget(
+    return _CustomKeyboardWidget(
       tenderEntryController: fieldController,
       submit: submit,
       numericOnly: numericOnly,
       unboundConstraints: unboundConstraints,
       keyboardTypeToggle: keyboardTypeToggle,
     );
-
-    return unboundConstraints ? Flexible(fit: FlexFit.tight, child: keyboard) : keyboard;
   }
 
   Color generateRandomColor() {
