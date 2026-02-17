@@ -570,6 +570,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     final characters = isQwerty ? qwertyCharacters : numericCharacters;
     final itemsPerRow = isQwerty ? 10 : 3;
     final spacing = isQwerty ? 4.0 : 8.0;
+    const footerHeight = 56.0;
 
     Widget buildGrid(BoxConstraints constraints) {
       final rows = (characters.length / itemsPerRow).ceil();
@@ -610,45 +611,53 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
       );
     }
 
-    final gridSection = LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.hasBoundedHeight) {
-          return Expanded(child: LayoutBuilder(builder: (context, inner) => buildGrid(inner)));
-        }
-        return SizedBox(height: 400, child: buildGrid(constraints));
-      },
-    );
-
     return ClipRect(
       clipBehavior: Clip.hardEdge,
-      child: Column(
-        spacing: 32,
-        children: [
-          gridSection,
-          Row(
-            spacing: 16,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final hasBoundedHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
+          final gridHeight = hasBoundedHeight
+              ? max(0, constraints.maxHeight - footerHeight - 32)
+              : 400.0;
+          final gridConstraints = BoxConstraints(
+            maxWidth: constraints.hasBoundedWidth ? constraints.maxWidth : double.infinity,
+            minHeight: gridHeight.toDouble(),
+            maxHeight: gridHeight.toDouble(),
+          );
+
+          return Column(
+            spacing: 32,
             children: [
-              Row(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (widget.keyboardTypeToggle)
-                    ElevatedButton(
-                        onPressed: switchKeyboard,
-                        child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+              SizedBox(height: gridHeight.toDouble(), child: buildGrid(gridConstraints)),
+              SizedBox(
+                height: footerHeight,
+                child: Row(
+                  spacing: 16,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 16,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (widget.keyboardTypeToggle)
+                          ElevatedButton(
+                              onPressed: switchKeyboard,
+                              child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+                          ),
+                        ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                      ],
                     ),
-                  ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                ],
+                    ElevatedButton(
+                        onPressed: onSubmit,
+                        child: Text('Submit', overflow: TextOverflow.clip)
+                    )
+                  ],
+                ),
               ),
-              ElevatedButton(
-                  onPressed: onSubmit,
-                  child: Text('Submit', overflow: TextOverflow.clip)
-              )
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
