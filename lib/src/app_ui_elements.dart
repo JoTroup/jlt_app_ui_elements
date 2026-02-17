@@ -623,56 +623,59 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final hasBoundedHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
-        final maxWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite
+        final hasBoundedWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite;
+
+        final maxWidth = hasBoundedWidth
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
         final availableHeight = hasBoundedHeight ? constraints.maxHeight : 400.0;
         final gridHeight = max(100.0, availableHeight - footerHeight - columnSpacing);
 
-        final gridConstraints = BoxConstraints(
-          minWidth: maxWidth,
-          maxWidth: maxWidth,
-          minHeight: gridHeight,
-          maxHeight: gridHeight,
+        final gridConstraints = BoxConstraints.tightFor(
+          width: maxWidth,
+          height: gridHeight,
         );
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: SizedBox(
+        return SizedBox(
+          width: maxWidth,
+          height: availableHeight,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: gridHeight,
                 width: maxWidth,
                 child: buildGrid(gridConstraints),
               ),
-            ),
-            SizedBox(height: columnSpacing),
-            SizedBox(
-              height: footerHeight,
-              child: Row(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    spacing: 16,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (widget.keyboardTypeToggle)
-                        ElevatedButton(
-                            onPressed: switchKeyboard,
-                            child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
-                        ),
-                      ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                    ],
-                  ),
-                  ElevatedButton(
-                      onPressed: onSubmit,
-                      child: Text('Submit', overflow: TextOverflow.clip)
-                  )
-                ],
+              SizedBox(height: columnSpacing),
+              SizedBox(
+                height: footerHeight,
+                child: Row(
+                  spacing: 16,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 16,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (widget.keyboardTypeToggle)
+                          ElevatedButton(
+                              onPressed: switchKeyboard,
+                              child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+                          ),
+                        ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                      ],
+                    ),
+                    ElevatedButton(
+                        onPressed: onSubmit,
+                        child: Text('Submit', overflow: TextOverflow.clip)
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
