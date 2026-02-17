@@ -506,7 +506,15 @@ class AppUiElements {
   }
 
   Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool unboundConstraints = false, bool keyboardTypeToggle = false}) {
-    return _CustomKeyboardWidget(tenderEntryController: fieldController, submit: submit, numericOnly: numericOnly, unboundConstraints: unboundConstraints, keyboardTypeToggle: keyboardTypeToggle);
+    final keyboard = _CustomKeyboardWidget(
+      tenderEntryController: fieldController,
+      submit: submit,
+      numericOnly: numericOnly,
+      unboundConstraints: unboundConstraints,
+      keyboardTypeToggle: keyboardTypeToggle,
+    );
+
+    return unboundConstraints ? Flexible(fit: FlexFit.tight, child: keyboard) : keyboard;
   }
 
   Color generateRandomColor() {
@@ -616,11 +624,15 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final hasBoundedHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
+          final maxWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite
+              ? constraints.maxWidth
+              : MediaQuery.of(context).size.width;
           final gridHeight = hasBoundedHeight
               ? max(0, constraints.maxHeight - footerHeight - 32)
               : 400.0;
           final gridConstraints = BoxConstraints(
-            maxWidth: constraints.hasBoundedWidth ? constraints.maxWidth : double.infinity,
+            minWidth: maxWidth,
+            maxWidth: maxWidth,
             minHeight: gridHeight.toDouble(),
             maxHeight: gridHeight.toDouble(),
           );
