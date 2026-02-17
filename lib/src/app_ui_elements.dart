@@ -569,38 +569,62 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     isQwerty = !widget.numericOnly;
     final characters = isQwerty ? qwertyCharacters : numericCharacters;
     final itemsPerRow = isQwerty ? 10 : 3;
+    final spacing = isQwerty ? 4.0 : 8.0;
+
+    Widget buildGrid(BoxConstraints constraints) {
+      final rows = (characters.length / itemsPerRow).ceil();
+      final gridWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite
+          ? constraints.maxWidth
+          : MediaQuery.of(context).size.width;
+      final gridHeight = constraints.hasBoundedHeight && constraints.maxHeight.isFinite
+          ? constraints.maxHeight
+          : 400.0;
+      final cellWidth = (gridWidth - (itemsPerRow - 1) * spacing) / itemsPerRow;
+      final cellHeight = (gridHeight - (rows - 1) * spacing) / rows;
+      final childAspectRatio = cellWidth > 0 && cellHeight > 0 ? cellWidth / cellHeight : 1.0;
+
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: itemsPerRow,
+          mainAxisSpacing: spacing,
+          crossAxisSpacing: spacing,
+          childAspectRatio: childAspectRatio,
+        ),
+        itemCount: characters.length,
+        itemBuilder: (context, index) {
+          final char = characters[index];
+          if (char.isEmpty) return SizedBox.shrink();
+          return SizedBox.expand(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor: AppTheme().getPrimaryBackgroundColour(),
+              ),
+              onPressed: () => onKeyboardTap(char),
+              child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18), overflow: TextOverflow.clip),
+            ),
+          );
+        },
+      );
+    }
+
+    final gridSection = LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.hasBoundedHeight) {
+          return Expanded(child: LayoutBuilder(builder: (context, inner) => buildGrid(inner)));
+        }
+        return SizedBox(height: 400, child: buildGrid(constraints));
+      },
+    );
+
     return ClipRect(
       clipBehavior: Clip.hardEdge,
       child: Column(
         spacing: 32,
         children: [
-          Container(
-            constraints: BoxConstraints(maxHeight: 400),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: itemsPerRow),
-              itemCount: characters.length,
-
-              itemBuilder: (context, index) {
-                final char = characters[index];
-                if (char.isEmpty) return SizedBox.shrink();
-                return Padding(
-                  padding: EdgeInsets.all(isQwerty ? 2 : 4.0),
-                  child: SizedBox.expand(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        backgroundColor: AppTheme().getPrimaryBackgroundColour(),
-                      ),
-                      onPressed: () => onKeyboardTap(char),
-                      child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18), overflow: TextOverflow.clip),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          gridSection,
           Row(
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.center,
