@@ -621,7 +621,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         final maxWidth = constraints.maxWidth.isFinite ? constraints.maxWidth : MediaQuery.of(context).size.width;
         final maxHeight = constraints.maxHeight.isFinite ? constraints.maxHeight : 400.0;
         final safeWidth = max(100.0, maxWidth);
-        final safeHeight = max(footerHeight + columnSpacing + 100.0, maxHeight);
+        final safeHeight = maxHeight;
         final gridHeight = max(50.0, safeHeight - footerHeight - columnSpacing);
 
         return SizedBox(
