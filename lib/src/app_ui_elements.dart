@@ -622,7 +622,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         final maxHeight = constraints.maxHeight.isFinite ? constraints.maxHeight : 400.0;
         final safeWidth = max(100.0, maxWidth);
         final safeHeight = maxHeight;
-        final gridHeight = max(50.0, safeHeight - footerHeight - columnSpacing);
+        final gridHeight = max(50.0, safeHeight - footerHeight /*- columnSpacing*/);
 
         return SizedBox(
           width: safeWidth,
@@ -636,7 +636,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
                 minHeight: gridHeight,
                 maxHeight: gridHeight,
               )),
-              SizedBox(height: columnSpacing),
+              //SizedBox(height: columnSpacing),
               SizedBox(
                 height: footerHeight,
                 child: Row(
