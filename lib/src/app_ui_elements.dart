@@ -688,25 +688,25 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
           );
         }
 
-        // Bounded height - use flexible layout
+        // Bounded height - calculate explicit grid height
+        final availableHeight = constraints.maxHeight;
+        final gridHeight = max(50.0, availableHeight - footerHeight - columnSpacing);
+
         return SizedBox(
           width: safeWidth,
+          height: availableHeight,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, gridConstraints) {
-                    final gridHeight = max(50.0, gridConstraints.maxHeight);
-                    return buildGrid(
-                      BoxConstraints(
-                        minWidth: safeWidth,
-                        maxWidth: safeWidth,
-                        minHeight: gridHeight,
-                        maxHeight: gridHeight,
-                      )
-                    );
-                  },
+              SizedBox(
+                height: gridHeight,
+                child: buildGrid(
+                  BoxConstraints(
+                    minWidth: safeWidth,
+                    maxWidth: safeWidth,
+                    minHeight: gridHeight,
+                    maxHeight: gridHeight,
+                  )
                 ),
               ),
               SizedBox(height: columnSpacing),
