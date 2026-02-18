@@ -630,15 +630,12 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              SizedBox(
-                height: gridHeight,
-                child: buildGrid(BoxConstraints(
-                  minWidth: safeWidth,
-                  maxWidth: safeWidth,
-                  minHeight: gridHeight,
-                  maxHeight: gridHeight,
-                )),
-              ),
+              buildGrid(BoxConstraints(
+                minWidth: safeWidth,
+                maxWidth: safeWidth,
+                minHeight: gridHeight,
+                maxHeight: gridHeight,
+              )),
               SizedBox(height: columnSpacing),
               SizedBox(
                 height: footerHeight,
