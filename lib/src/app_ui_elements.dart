@@ -632,7 +632,8 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
 
         // Ensure we always have positive dimensions
         final safeWidth = max(100.0, maxWidth);
-        final safeHeight = max(footerHeight + columnSpacing + 100.0, maxHeight);
+        // Use the actual height provided, don't force a minimum
+        final safeHeight = maxHeight;
 
         return SizedBox(
           width: safeWidth,
@@ -644,12 +645,14 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
                 child: LayoutBuilder(
                   builder: (context, gridConstraints) {
                     final gridHeight = gridConstraints.maxHeight;
-                    return buildGrid(BoxConstraints(
-                      minWidth: safeWidth,
-                      maxWidth: safeWidth,
-                      minHeight: gridHeight,
-                      maxHeight: gridHeight,
-                    ));
+                    return buildGrid(
+                      BoxConstraints(
+                        minWidth: safeWidth,
+                        maxWidth: safeWidth,
+                        minHeight: gridHeight,
+                        maxHeight: gridHeight,
+                      )
+                    );
                   },
                 ),
               ),
