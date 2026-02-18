@@ -626,55 +626,64 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         final maxWidth = constraints.maxWidth.isFinite
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
+        final maxHeight = constraints.maxHeight.isFinite
+            ? constraints.maxHeight
+            : 400.0;
 
         // Ensure we always have positive dimensions
         final safeWidth = max(100.0, maxWidth);
+        final safeHeight = max(footerHeight + columnSpacing + 100.0, maxHeight);
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, gridConstraints) {
-                  final gridHeight = gridConstraints.maxHeight;
-                  return buildGrid(BoxConstraints(
-                    minWidth: safeWidth,
-                    maxWidth: safeWidth,
-                    minHeight: max(50.0, gridHeight),
-                    maxHeight: max(50.0, gridHeight),
-                  ));
-                },
+        return SizedBox(
+          width: safeWidth,
+          height: safeHeight,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, gridConstraints) {
+                    final gridHeight = gridConstraints.maxHeight;
+                    return buildGrid(BoxConstraints(
+                      minWidth: safeWidth,
+                      maxWidth: safeWidth,
+                      minHeight: gridHeight,
+                      maxHeight: gridHeight,
+                    ));
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: columnSpacing),
-            SizedBox(
-              height: footerHeight,
-              child: Row(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    spacing: 16,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (widget.keyboardTypeToggle)
-                        ElevatedButton(
-                            onPressed: switchKeyboard,
-                            child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
-                        ),
-                      ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                    ],
-                  ),
-                  ElevatedButton(
-                      onPressed: onSubmit,
-                      child: Text('Submit', overflow: TextOverflow.clip)
-                  )
-                ],
+              SizedBox(height: columnSpacing),
+              SizedBox(
+                height: footerHeight,
+                width: safeWidth,
+                child: Row(
+                  spacing: 16,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 16,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.keyboardTypeToggle)
+                          ElevatedButton(
+                              onPressed: switchKeyboard,
+                              child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+                          ),
+                        ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                      ],
+                    ),
+                    ElevatedButton(
+                        onPressed: onSubmit,
+                        child: Text('Submit', overflow: TextOverflow.clip)
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
