@@ -630,54 +630,56 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         // Ensure we always have positive dimensions
         final safeWidth = max(100.0, maxWidth);
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, gridConstraints) {
-                  final gridHeight = max(50.0, gridConstraints.maxHeight);
-                  return buildGrid(
-                    BoxConstraints(
-                      minWidth: safeWidth,
-                      maxWidth: safeWidth,
-                      minHeight: gridHeight,
-                      maxHeight: gridHeight,
+        return SizedBox(
+          width: safeWidth,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, gridConstraints) {
+                    final gridHeight = max(50.0, gridConstraints.maxHeight);
+                    return buildGrid(
+                      BoxConstraints(
+                        minWidth: safeWidth,
+                        maxWidth: safeWidth,
+                        minHeight: gridHeight,
+                        maxHeight: gridHeight,
+                      )
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: columnSpacing),
+              SizedBox(
+                height: footerHeight,
+                child: Row(
+                  spacing: 16,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 16,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.keyboardTypeToggle)
+                          ElevatedButton(
+                              onPressed: switchKeyboard,
+                              child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
+                          ),
+                        ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
+                      ],
+                    ),
+                    ElevatedButton(
+                        onPressed: onSubmit,
+                        child: Text('Submit', overflow: TextOverflow.clip)
                     )
-                  );
-                },
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: columnSpacing),
-            SizedBox(
-              height: footerHeight,
-              width: safeWidth,
-              child: Row(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    spacing: 16,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (widget.keyboardTypeToggle)
-                        ElevatedButton(
-                            onPressed: switchKeyboard,
-                            child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
-                        ),
-                      ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                    ],
-                  ),
-                  ElevatedButton(
-                      onPressed: onSubmit,
-                      child: Text('Submit', overflow: TextOverflow.clip)
-                  )
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
