@@ -581,12 +581,8 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
 
     Widget buildGrid(BoxConstraints constraints) {
       final rows = (characters.length / itemsPerRow).ceil();
-      final gridWidth = constraints.maxWidth.isFinite
-          ? constraints.maxWidth
-          : MediaQuery.of(context).size.width;
-      final gridHeight = constraints.maxHeight.isFinite
-          ? constraints.maxHeight
-          : 400.0;
+      final gridWidth = constraints.maxWidth.isFinite ? constraints.maxWidth : MediaQuery.of(context).size.width;
+      final gridHeight = constraints.maxHeight.isFinite ? constraints.maxHeight : 400.0;
       final cellWidth = (gridWidth - (itemsPerRow - 1) * spacing) / itemsPerRow;
       final cellHeight = (gridHeight - (rows - 1) * spacing) / rows;
       final childAspectRatio = cellWidth > 0 && cellHeight > 0 ? cellWidth / cellHeight : 1.0;
@@ -622,92 +618,26 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute concrete dimensions from constraints
-        final maxWidth = constraints.maxWidth.isFinite
-            ? constraints.maxWidth
-            : MediaQuery.of(context).size.width;
-        final hasInfiniteHeight = !constraints.hasBoundedHeight || !constraints.maxHeight.isFinite;
-
-        // Ensure we always have positive dimensions
+        final maxWidth = constraints.maxWidth.isFinite ? constraints.maxWidth : MediaQuery.of(context).size.width;
+        final maxHeight = constraints.maxHeight.isFinite ? constraints.maxHeight : 400.0;
         final safeWidth = max(100.0, maxWidth);
-
-        // When height is unbounded, we need to use a fixed height
-        // When height is bounded, use intrinsic sizing
-        if (hasInfiniteHeight) {
-          // Unbounded height - use fixed dimensions
-          const defaultHeight = 400.0;
-          final gridHeight = defaultHeight - footerHeight - columnSpacing;
-
-          return SizedBox(
-            width: safeWidth,
-            height: defaultHeight,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(
-                  height: gridHeight,
-                  child: buildGrid(
-                    BoxConstraints(
-                      minWidth: safeWidth,
-                      maxWidth: safeWidth,
-                      minHeight: gridHeight,
-                      maxHeight: gridHeight,
-                    )
-                  ),
-                ),
-                SizedBox(height: columnSpacing),
-                SizedBox(
-                  height: footerHeight,
-                  child: Row(
-                    spacing: 16,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        spacing: 16,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (widget.keyboardTypeToggle)
-                            ElevatedButton(
-                                onPressed: switchKeyboard,
-                                child: Text(isQwerty ? '123' : 'ABC', overflow: TextOverflow.clip)
-                            ),
-                          ElevatedButton(onPressed: onRemove, child: Icon(Icons.backspace)),
-                        ],
-                      ),
-                      ElevatedButton(
-                          onPressed: onSubmit,
-                          child: Text('Submit', overflow: TextOverflow.clip)
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-
-        // Bounded height - calculate explicit grid height
-        final availableHeight = constraints.maxHeight;
-        final gridHeight = max(50.0, availableHeight - footerHeight - columnSpacing);
+        final safeHeight = max(footerHeight + columnSpacing + 100.0, maxHeight);
+        final gridHeight = max(50.0, safeHeight - footerHeight - columnSpacing);
 
         return SizedBox(
           width: safeWidth,
-          height: availableHeight,
+          height: safeHeight,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
                 height: gridHeight,
-                child: buildGrid(
-                  BoxConstraints(
-                    minWidth: safeWidth,
-                    maxWidth: safeWidth,
-                    minHeight: gridHeight,
-                    maxHeight: gridHeight,
-                  )
-                ),
+                child: buildGrid(BoxConstraints(
+                  minWidth: safeWidth,
+                  maxWidth: safeWidth,
+                  minHeight: gridHeight,
+                  maxHeight: gridHeight,
+                )),
               ),
               SizedBox(height: columnSpacing),
               SizedBox(
