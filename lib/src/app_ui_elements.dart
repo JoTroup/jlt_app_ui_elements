@@ -505,12 +505,11 @@ class AppUiElements {
     );
   }
 
-  Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool unboundConstraints = false, bool keyboardTypeToggle = false}) {
+  Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool keyboardTypeToggle = false}) {
     return _CustomKeyboardWidget(
       tenderEntryController: fieldController,
       submit: submit,
       numericOnly: numericOnly,
-      unboundConstraints: unboundConstraints,
       keyboardTypeToggle: keyboardTypeToggle,
     );
   }
@@ -525,9 +524,8 @@ class _CustomKeyboardWidget extends StatefulWidget {
   final TextEditingController tenderEntryController;
   final Function submit;
   final bool numericOnly;
-  final bool unboundConstraints;
   final bool keyboardTypeToggle;
-  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, required this.unboundConstraints, required this.keyboardTypeToggle});
+  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, required this.keyboardTypeToggle});
 
   @override
   State<_CustomKeyboardWidget> createState() => _CustomKeyboardWidgetState();
