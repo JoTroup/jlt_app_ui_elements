@@ -834,6 +834,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
 
     return Container(
       decoration: BoxDecoration(color: Colors.white),
+      padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
       child: Column(
         spacing: 16,
         mainAxisAlignment: MainAxisAlignment.center,
