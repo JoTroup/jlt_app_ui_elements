@@ -175,67 +175,6 @@ class AppUiElements {
     );
   }
 
-  void showUserDetailsDialog({required BuildContext context, required tickerProvider, required void Function(VoidCallback fn) setState, required Widget contentOverride, List<Widget>? overrideActions}) {
-    AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          clipBehavior: Clip.hardEdge,
-          titlePadding: EdgeInsets.all(0),
-          title: Stack(
-            alignment: Alignment.center,
-            children: [
-              RotatedBox(
-                quarterTurns: 2,
-                child: WavesWidget(
-                  amplitude: 5,
-                  size: Size(double.infinity, 60),
-                  waveLayers: [WaveLayer.solid(duration: 30000, heightFactor: 0.9, color: AppTheme().getPrimaryColour())],
-                ),
-              ),
-              Row(
-                spacing: 16,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ColorFiltered(
-                    colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    child: Lottie.asset(
-                      "assets/lotties/main-account.json",
-                      controller: hoverAnimationController,
-                      width: 32,
-                      height: 32,
-                      onLoaded: (p0) {
-                        hoverAnimationController.duration = p0.duration;
-                        hoverAnimationController.reset();
-                        hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                      },
-                    ),
-                  ),
-                  Text('User Details', style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
-                ],
-              ),
-            ],
-          ),
-          content: Container(
-            padding: AppTheme().getAppPadding(),
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6, minWidth: 400),
-            child: SingleChildScrollView(child: contentOverride),
-          ),
-          actions:
-              overrideActions ??
-              <Widget>[
-                TextButton(
-                  style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
-                  child: const Text('close'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-        );
-      },
-    );
-  }
-
   InputDecoration settingsFormFieldDecoration({required String labelText, String? hintText}) {
     return InputDecoration(floatingLabelBehavior: FloatingLabelBehavior.always, label: Text(labelText), hintText: hintText);
   }
