@@ -15,6 +15,8 @@ class SideBarController {
   bool isCompactDevice = false;
   int currentViewIndex = 0;
 
+  String customLogoUrl = "";
+
 
   ValueNotifier<Widget> currentMenu = ValueNotifier(Container());
 
@@ -786,10 +788,24 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                if(widget.logoAssetPath.endsWith(".svg"))
-                  SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36)
+                if(sideBarController.customLogoUrl.isNotEmpty)
+                  ...[
+                    Image.network(sideBarController.customLogoUrl, width: 36, height: 36, errorBuilder: (context, error, stackTrace) {
+                      if(widget.logoAssetPath.endsWith(".svg")) {
+                        return SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36);
+                      } else {
+                        return Image.asset(widget.logoAssetPath, width: 36, height: 36);
+                      }
+                    }),
+                  ]
                 else
-                  Image.asset(widget.logoAssetPath, width: 36, height: 36),
+                  ...[
+                    if(widget.logoAssetPath.endsWith(".svg"))
+                      SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36)
+                    else
+                      Image.asset(widget.logoAssetPath, width: 36, height: 36),
+                  ],
+
                 AnimatedSize(
                   duration: Duration(milliseconds: 100),
                   child: SizedBox(
