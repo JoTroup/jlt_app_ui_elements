@@ -314,10 +314,8 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.center}) {
+  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.spaceBetween}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
-    //TextEditingController passcodeController = TextEditingController();
-
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -352,7 +350,7 @@ class AppUiElements {
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
-              child: const Text('cancel'),
+              child: Text(cancelButtonText ?? 'cancel'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
 
