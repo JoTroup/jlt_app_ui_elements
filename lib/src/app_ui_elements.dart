@@ -314,7 +314,7 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message}) {
+  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.center}) {
     AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
     //TextEditingController passcodeController = TextEditingController();
 
@@ -322,7 +322,7 @@ class AppUiElements {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          actionsAlignment: MainAxisAlignment.center,
+          actionsAlignment: actionAlignment,
           title: Row(
             children: [
               Lottie.asset(
@@ -358,7 +358,7 @@ class AppUiElements {
 
             TextButton(
               style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
-              child: const Text('confirm'),
+              child: Text(confirmButtonText ?? 'confirm'),
               onPressed: () => Navigator.of(context).pop(true),
             ),
           ],
