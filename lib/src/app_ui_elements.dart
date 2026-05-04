@@ -396,7 +396,7 @@ class AppUiElements {
               children: [
                 if (disableHeading == false)
                   Padding(
-                    padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0),
+                    padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0, bottom: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       spacing: 8,
@@ -434,7 +434,10 @@ class AppUiElements {
                     ),
                   ),
 
-                Flexible(child: SingleChildScrollView(child: contentOverride ?? Text(title ?? ""))),
+                Flexible(child: SingleChildScrollView(child: Padding(
+                  padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, bottom: 0),
+                  child: contentOverride ?? Text(title ?? ""),
+                ))),
 
                 if (overrideActions != null) Row(spacing: actionSpacing ?? 8, mainAxisAlignment: actionAlignment ?? MainAxisAlignment.center, children: overrideActions),
               ],
