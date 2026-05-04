@@ -434,8 +434,8 @@ class AppUiElements {
                     ),
                   ),
 
-                Flexible(child: SingleChildScrollView(child: Padding(
-                  padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, bottom: 0),
+                Flexible(child: SingleChildScrollView(child: Container(
+                  padding: description != null ? AppTheme().getAppPadding().copyWith(left: 0, right: 0, bottom: 0) : null,
                   child: contentOverride ?? Text(title ?? ""),
                 ))),
 
