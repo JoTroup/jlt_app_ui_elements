@@ -17,6 +17,10 @@ dependencies:
   wave_widget: ^0.1.0+1
   flutter_svg: ^2.2.1
   animations: ^2.0.11
+  url_launcher: ^6.3.1
+  reveal_text: ^1.0.0
+  rounded_loading_button_plus: ^3.0.1
+
 
 
   jlt_app_theme_handler:
