@@ -203,7 +203,7 @@ class AppUiElements {
                   spacing: 16,
                   children: [
                     Icon(icon),
-                    Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                    Text(title, style: AppTheme().getH2TextStyle()),
                   ],
                 ),
                 if (functionWidget != null) functionWidget,
@@ -240,7 +240,7 @@ class AppUiElements {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           spacing: 16,
           children: [
-            contentWidget ?? Text(settingTitle ?? "", style: TextStyle(fontWeight: FontWeight.w500)),
+            contentWidget ?? Text(settingTitle ?? "", style: AppTheme().getBodyTextStyle()),
             if (functionWidget != null) functionWidget,
           ],
         ),
@@ -349,13 +349,13 @@ class AppUiElements {
           ),
           actions: <Widget>[
             TextButton(
-              style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
+              style: AppTheme().getBodyTextStyle(),
               child: Text(cancelButtonText ?? 'cancel'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
 
             TextButton(
-              style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
+              style: AppTheme().getBodyTextStyle(),
               child: Text(confirmButtonText ?? 'confirm'),
               onPressed: () => Navigator.of(context).pop(true),
             ),
@@ -820,7 +820,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                         widget.appName.toUpperCase(),
                         overflow: TextOverflow.clip,
                         softWrap: false,
-                        style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.w600),
+                        style: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
                       ),
                     ),
                   ),
