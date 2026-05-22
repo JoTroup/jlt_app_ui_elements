@@ -225,7 +225,7 @@ class AppUiElements {
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(),
-        Row(children: [Text(title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(fontSize: 14))]),
+        Row(children: [Text(title, style: AppTheme().getH2TextStyle(subHeading: true))]),
         Divider(thickness: 1, color: Colors.black26, radius: BorderRadius.circular(25)),
       ],
     );
@@ -301,7 +301,7 @@ class AppUiElements {
                       Text(
                         menuNameString.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.black54),
+                        style: AppTheme().getH2TextStyle(subHeading: true),
                       ),
                     ],
                   ],
@@ -335,7 +335,7 @@ class AppUiElements {
                 },
               ),
               Container(width: 10),
-              Text('Are you sure?', style: AppTheme().primarySubMenuHeadingStyle),
+              Text('Are you sure?', style: AppTheme().getH2TextStyle()),
             ],
           ),
           content: Container(
@@ -423,7 +423,7 @@ class AppUiElements {
                                   hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
                                 },
                               ),
-                            Expanded(child: Text(title ?? "", style: AppTheme().primarySubMenuHeadingStyle)),
+                            Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
                           ],
                         ),
 
@@ -685,7 +685,7 @@ class _MenuHeroWidgetState extends State<MenuHeroWidget> with TickerProviderStat
                   ),
                 ),
                 Expanded(
-                  child: Text(widget.title, style: AppTheme().primarySubMenuHeadingStyle.copyWith(color: Colors.white)),
+                  child: Text(widget.title, style: AppTheme().getH2TextStyle(color: Colors.white)),
                 ),
                 if (widget.functionWidget != null) widget.functionWidget!,
               ],
