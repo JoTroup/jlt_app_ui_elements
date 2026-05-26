@@ -860,7 +860,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
 
           Expanded(child: Container()),
 
-          if (!AppTheme().getDeviceSmall() && widget.isExpandable)
+          if (!AppTheme().isDeviceSmall() && widget.isExpandable)
             Row(
               children: [
                 Center(
