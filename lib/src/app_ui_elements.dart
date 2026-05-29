@@ -44,6 +44,75 @@ class SideBarLottieButton {
 }
 
 class AppUiElements {
+  BoxConstraints getAppWidthConstraints({double addWidth = 0}) {
+    return BoxConstraints(maxWidth: 700 + addWidth);
+  }
+
+  Widget glassContainer({required Widget child, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
+    BorderRadius calculatedBorderRadius = borderRadius ?? AppTheme().getAppRadius() * 2;
+    List<BoxShadow> calculatedBoxShadow;
+    Color calculatedBackgroundColor = backgroundColor ?? Colors.white.withAlpha(140);
+
+    if (boxShadow == null) {
+      calculatedBoxShadow = [
+        BoxShadow(
+          color: Colors.black.withAlpha(10),
+          blurRadius: 10,
+          offset: const Offset(0, 10),
+        )
+      ];
+    } else {
+      calculatedBoxShadow = boxShadow;
+    }
+
+    Widget content = Container(
+      decoration: BoxDecoration(
+        borderRadius: calculatedBorderRadius,
+        boxShadow: calculatedBoxShadow,
+      ),
+      child: Material(
+        color: calculatedBackgroundColor,
+        borderRadius: calculatedBorderRadius,
+        child: child,
+      ),
+    );
+
+    if (withBubbleBackground == true) {
+      content = Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Positioned.fill(
+            bottom: backgroundBottomOffset.toDouble(),
+            child: Container(
+              constraints: getAppWidthConstraints(),
+              decoration: BoxDecoration(
+                borderRadius: AppTheme().getAppRadius() * 2,
+              ),
+              child: ClipRRect(
+                borderRadius: AppTheme().getAppRadius() * 2,
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(AppTheme().getPrimaryColour(), BlendMode.srcATop),
+                  child: RotatedBox(
+                    quarterTurns: backgroundRotationTurns,
+                    child: Lottie.asset(
+                      frameRate: const FrameRate(60),
+                      'assets/lotties/bubbles_lottie.json',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          content,
+        ],
+      );
+    }
+    return content;
+  }
+
+
+
   /// HELPER FUNCTIONS
   void handleNavigationChange({
     required SideBarController sideBarController,
