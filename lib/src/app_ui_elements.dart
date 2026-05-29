@@ -436,7 +436,7 @@ class AppUiElements {
 
   Future<bool?> genericDialog({
     required BuildContext context,
-    required tickerProvider,
+    TickerProvider? tickerProvider,
     bool disableIcon = false,
     bool disableHeading = false,
     String? lottieIconOverride,
@@ -450,7 +450,9 @@ class AppUiElements {
     double? actionSpacing,
     bool? automaticallyPop,
     double? widthOverride}) {
-    AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
+
+    AnimationController? hoverAnimationController;
+    tickerProvider != null ? hoverAnimationController  = AnimationController(vsync: tickerProvider) : null;
 
     return showDialog<bool>(
       context: context,
@@ -480,16 +482,16 @@ class AppUiElements {
                                 child: Icon(Icons.close, size: 24, color: Colors.black54),
                               ),
 
-                            if (disableIcon == false)
+                            if (disableIcon == false && hoverAnimationController != null)
                               Lottie.asset(
                                 lottieIconOverride ?? "assets/lotties/main-check.json",
                                 controller: hoverAnimationController,
                                 width: iconSizeOverride ?? 32,
                                 height: iconSizeOverride ?? 32,
                                 onLoaded: (p0) {
-                                  hoverAnimationController.duration = p0.duration;
-                                  hoverAnimationController.reset();
-                                  hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                                  hoverAnimationController?.duration = p0.duration;
+                                  hoverAnimationController?.reset();
+                                  hoverAnimationController?.forward().then((value) => hoverAnimationController?.stop());
                                 },
                               ),
                             Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
