@@ -418,13 +418,13 @@ class AppUiElements {
           ),
           actions: <Widget>[
             TextButton(
-              style: AppTheme().getBodyTextStyle(),
+              //style: AppTheme().getBodyTextStyle(),
               child: Text(cancelButtonText ?? 'cancel'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
 
             TextButton(
-              style: AppTheme().getBodyTextStyle(),
+              //style: AppTheme().getBodyTextStyle(),
               child: Text(confirmButtonText ?? 'confirm'),
               onPressed: () => Navigator.of(context).pop(true),
             ),
