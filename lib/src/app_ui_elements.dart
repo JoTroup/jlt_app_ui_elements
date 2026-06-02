@@ -383,8 +383,8 @@ class AppUiElements {
     );
   }
 
-  Future<bool?> confirmActionDialog({required BuildContext context, required tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.spaceBetween}) {
-    AnimationController hoverAnimationController = AnimationController(vsync: tickerProvider);
+  Future<bool?> confirmActionDialog({required BuildContext context,TickerProvider? tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.spaceBetween}) {
+    AnimationController? hoverAnimationController = tickerProvider != null ? AnimationController(vsync: tickerProvider) : null;
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -392,17 +392,18 @@ class AppUiElements {
           actionsAlignment: actionAlignment,
           title: Row(
             children: [
-              Lottie.asset(
-                "assets/lotties/main-help.json",
-                controller: hoverAnimationController,
-                width: 32,
-                height: 32,
-                onLoaded: (p0) {
-                  hoverAnimationController.duration = p0.duration;
-                  hoverAnimationController.reset();
-                  hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
-                },
-              ),
+              if (hoverAnimationController != null)
+                Lottie.asset(
+                  "assets/lotties/main-help.json",
+                  controller: hoverAnimationController,
+                  width: 32,
+                  height: 32,
+                  onLoaded: (p0) {
+                    hoverAnimationController.duration = p0.duration;
+                    hoverAnimationController.reset();
+                    hoverAnimationController.forward().then((value) => hoverAnimationController.stop());
+                  },
+                ),
               Container(width: 10),
               Text('Are you sure?', style: AppTheme().getH2TextStyle()),
             ],
