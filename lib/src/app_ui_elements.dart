@@ -851,7 +851,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
     }
 
     return AppUiElements().glassContainer(
-      backgroundColor: AppTheme().getPrimaryColour(),
+      backgroundColor: AppTheme().getPrimaryColour().withAlpha(50) ,
       child: Container(
         padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
         child: Column(
