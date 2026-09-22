@@ -254,37 +254,39 @@ class AppUiElements {
   Widget settingsMenuRow({required IconData icon, required String title, Widget? functionWidget, Widget? contentWidget, bool? disableWidget}) {
     return IgnorePointer(
       ignoring: disableWidget ?? false,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: AppTheme().getAppRadius(),
-          border: Border.all(color: Colors.black12, width: 1),
-        ),
-        foregroundDecoration: disableWidget != null && disableWidget ? BoxDecoration(color: Colors.black45, borderRadius: AppTheme().getAppRadius()) : null,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              spacing: 16,
-              children: [
-                Row(
-                  spacing: 16,
-                  children: [
-                    Icon(icon),
-                    Text(title, style: AppTheme().getH2TextStyle()),
-                  ],
-                ),
-                if (functionWidget != null) functionWidget,
-              ],
-            ),
-
-            Container(
-              margin: EdgeInsets.only(top: contentWidget != null ? 12 : 0),
-              child: contentWidget ?? Container(),
-            ),
-          ],
+      child: glassContainer(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: AppTheme().getAppRadius(),
+            border: Border.all(color: Colors.black12, width: 1),
+          ),
+          foregroundDecoration: disableWidget != null && disableWidget ? BoxDecoration(color: Colors.black45, borderRadius: AppTheme().getAppRadius()) : null,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: 16,
+                children: [
+                  Row(
+                    spacing: 16,
+                    children: [
+                      Icon(icon),
+                      Text(title, style: AppTheme().getH2TextStyle()),
+                    ],
+                  ),
+                  if (functionWidget != null) functionWidget,
+                ],
+              ),
+        
+              Container(
+                margin: EdgeInsets.only(top: contentWidget != null ? 12 : 0),
+                child: contentWidget ?? Container(),
+              ),
+            ],
+          ),
         ),
       ),
     );
