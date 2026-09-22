@@ -3,6 +3,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:jlt_app_theme_handler/jlt_app_theme_handler.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tinycolor2/tinycolor2.dart';
 import 'package:wave_widget/wave_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -851,7 +852,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
     }
 
     return AppUiElements().glassContainer(
-      backgroundColor: AppTheme().getPrimaryColour().withAlpha(50) ,
+      backgroundColor: AppTheme().getPrimaryColour().lighten(20),
       child: Container(
         padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
         child: Column(
