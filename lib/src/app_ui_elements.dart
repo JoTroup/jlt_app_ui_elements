@@ -256,11 +256,10 @@ class AppUiElements {
       ignoring: disableWidget ?? false,
       child: glassContainer(
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: AppTheme().getAppPadding(),
           decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: AppTheme().getAppRadius(),
-            border: Border.all(color: Colors.black12, width: 1),
+            //border: Border.all(color: Colors.black12, width: 1),
           ),
           foregroundDecoration: disableWidget != null && disableWidget ? BoxDecoration(color: Colors.black45, borderRadius: AppTheme().getAppRadius()) : null,
           child: Column(
