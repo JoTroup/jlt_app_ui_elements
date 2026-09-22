@@ -779,6 +779,7 @@ class SideNavBar extends StatefulWidget {
   final Function setState;
   final bool isExpandable;
   final bool mounted;
+  final Color? backgroundColor;
 
   const SideNavBar({
     super.key,
@@ -790,6 +791,7 @@ class SideNavBar extends StatefulWidget {
     required this.setState,
     required this.mounted,
     this.isExpandable = true,
+    this.backgroundColor,
   });
 
   @override
@@ -852,7 +854,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
     }
 
     return AppUiElements().glassContainer(
-      backgroundColor: AppTheme().getPrimaryColour().lighten(80),
+      backgroundColor: widget.backgroundColor,
       child: Container(
         padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
         child: Column(
