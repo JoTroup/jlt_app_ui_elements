@@ -780,6 +780,8 @@ class SideNavBar extends StatefulWidget {
   final bool isExpandable;
   final bool mounted;
   final Color? backgroundColor;
+  final EdgeInsets? marginOverride;
+  final EdgeInsets? paddingOverride;
 
   const SideNavBar({
     super.key,
@@ -792,6 +794,9 @@ class SideNavBar extends StatefulWidget {
     required this.mounted,
     this.isExpandable = true,
     this.backgroundColor,
+    this.marginOverride,
+    this.paddingOverride,
+
   });
 
   @override
@@ -853,128 +858,131 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
       );
     }
 
-    return AppUiElements().glassContainer(
-      backgroundColor: widget.backgroundColor,
-      child: Container(
-        padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
-        child: Column(
-          spacing: 16,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
-              child: Wrap(
-                spacing: sideBarController.isExpanded ? 16 : 0,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  if(sideBarController.customLogoUrl.isNotEmpty)
-                    ...[
-                      Image.network(sideBarController.customLogoUrl, width: 36, height: 36, errorBuilder: (context, error, stackTrace) {
-                        if(widget.logoAssetPath.endsWith(".svg")) {
-                          return SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36);
-                        } else {
-                          return Image.asset(widget.logoAssetPath, width: 36, height: 36);
-                        }
-                      }),
-                    ]
-                  else
-                    ...[
-                      if(widget.logoAssetPath.endsWith(".svg"))
-                        SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36)
-                      else
-                        Image.asset(widget.logoAssetPath, width: 36, height: 36),
-                    ],
+    return Padding(
+      padding: widget.marginOverride ?? AppTheme().getAppPadding()/2,
+      child: AppUiElements().glassContainer(
+        backgroundColor: widget.backgroundColor,
+        child: Container(
+          padding: widget.paddingOverride ?? AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
+          child: Column(
+            spacing: 16,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
+                child: Wrap(
+                  spacing: sideBarController.isExpanded ? 16 : 0,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    if(sideBarController.customLogoUrl.isNotEmpty)
+                      ...[
+                        Image.network(sideBarController.customLogoUrl, width: 36, height: 36, errorBuilder: (context, error, stackTrace) {
+                          if(widget.logoAssetPath.endsWith(".svg")) {
+                            return SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36);
+                          } else {
+                            return Image.asset(widget.logoAssetPath, width: 36, height: 36);
+                          }
+                        }),
+                      ]
+                    else
+                      ...[
+                        if(widget.logoAssetPath.endsWith(".svg"))
+                          SvgPicture.asset(widget.logoAssetPath, width: 36, height: 36)
+                        else
+                          Image.asset(widget.logoAssetPath, width: 36, height: 36),
+                      ],
 
-                  AnimatedSize(
-                    duration: Duration(milliseconds: 100),
-                    child: SizedBox(
-                      width: sideBarController.isExpanded ? null : 0,
-                      child: ClipRect(
-                        child: Text(
-                          widget.appName.toUpperCase(),
-                          overflow: TextOverflow.clip,
-                          softWrap: false,
-                          style: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
+                    AnimatedSize(
+                      duration: Duration(milliseconds: 100),
+                      child: SizedBox(
+                        width: sideBarController.isExpanded ? null : 0,
+                        child: ClipRect(
+                          child: Text(
+                            widget.appName.toUpperCase(),
+                            overflow: TextOverflow.clip,
+                            softWrap: false,
+                            style: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            Expanded(child: Container()),
+              Expanded(child: Container()),
 
-            Wrap(
-              direction: Axis.vertical,
-              children: List.generate(widget.primaryActions.length, (index) {
-                final action = widget.primaryActions[index];
-                return AppUiElements().animatedNavButton(
-                  context: context,
-                  onTap: () {
-                    AppUiElements().handleNavigationChange(
-                      selectedIndex: index,
-                      updateMenu: widget.setState,
-                      replacementWidget: action.widget,
-                      context: context,
-                      mounted: widget.mounted,
-                      sideBarController: sideBarController,
-                    );
-                  },
-                  hoverAnimationController: primaryControllers[index],
-                  lottieString: action.lottieStringAssetPath,
-                  setState: widget.setState,
-                  selectedHighlightRightIndex: index,
-                  menuNameString: "",
-                  expandedMenuTitle: sideBarController.isExpanded,
-                  isCompactView: sideBarController.isCompactDevice,
-                );
-              }),
-            ),
+              Wrap(
+                direction: Axis.vertical,
+                children: List.generate(widget.primaryActions.length, (index) {
+                  final action = widget.primaryActions[index];
+                  return AppUiElements().animatedNavButton(
+                    context: context,
+                    onTap: () {
+                      AppUiElements().handleNavigationChange(
+                        selectedIndex: index,
+                        updateMenu: widget.setState,
+                        replacementWidget: action.widget,
+                        context: context,
+                        mounted: widget.mounted,
+                        sideBarController: sideBarController,
+                      );
+                    },
+                    hoverAnimationController: primaryControllers[index],
+                    lottieString: action.lottieStringAssetPath,
+                    setState: widget.setState,
+                    selectedHighlightRightIndex: index,
+                    menuNameString: "",
+                    expandedMenuTitle: sideBarController.isExpanded,
+                    isCompactView: sideBarController.isCompactDevice,
+                  );
+                }),
+              ),
 
-            Expanded(child: Container()),
+              Expanded(child: Container()),
 
-            if (!AppTheme().isDeviceSmall() && widget.isExpandable)
-              Row(
-                children: [
-                  Center(
-                    child: AnimatedRotation(
-                      turns: sideBarController.isExpanded ? 0 : 0.5,
-                      duration: Duration(milliseconds: 300),
-                      child: IconButton(
-                        onPressed: () {
-                          widget.setState(() {
-                            sideBarController.isExpanded = !sideBarController.isExpanded;
-                          });
-                        },
-                        icon: Icon(Icons.arrow_left, color: Colors.black38),
+              if (!AppTheme().isDeviceSmall() && widget.isExpandable)
+                Row(
+                  children: [
+                    Center(
+                      child: AnimatedRotation(
+                        turns: sideBarController.isExpanded ? 0 : 0.5,
+                        duration: Duration(milliseconds: 300),
+                        child: IconButton(
+                          onPressed: () {
+                            widget.setState(() {
+                              sideBarController.isExpanded = !sideBarController.isExpanded;
+                            });
+                          },
+                          icon: Icon(Icons.arrow_left, color: Colors.black38),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-            Wrap(
-              direction: Axis.vertical,
-              children: List.generate(widget.settingsActions.length, (index) {
-                final action = widget.settingsActions[index];
-                return AppUiElements().animatedNavButton(
-                  context: context,
-                  onTap: () {
-                    if (action.onTap != null) action.onTap!();
-                  },
-                  hoverAnimationController: settingsControllers[index],
-                  lottieString: action.lottieStringAssetPath,
-                  setState: widget.setState,
-                  menuNameString: "",
-                  expandedMenuTitle: sideBarController.isExpanded,
-                  isCompactView: sideBarController.isCompactDevice,
-                );
-              }),
-            ),
-          ],
+              Wrap(
+                direction: Axis.vertical,
+                children: List.generate(widget.settingsActions.length, (index) {
+                  final action = widget.settingsActions[index];
+                  return AppUiElements().animatedNavButton(
+                    context: context,
+                    onTap: () {
+                      if (action.onTap != null) action.onTap!();
+                    },
+                    hoverAnimationController: settingsControllers[index],
+                    lottieString: action.lottieStringAssetPath,
+                    setState: widget.setState,
+                    menuNameString: "",
+                    expandedMenuTitle: sideBarController.isExpanded,
+                    isCompactView: sideBarController.isCompactDevice,
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
