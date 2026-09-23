@@ -386,6 +386,27 @@ class AppUiElements {
   }
 
   Future<bool?> confirmActionDialog({required BuildContext context,TickerProvider? tickerProvider, String? message, String? confirmButtonText, String? cancelButtonText, actionAlignment = MainAxisAlignment.spaceBetween}) {
+
+    return genericDialog(
+        context: context,
+        tickerProvider: tickerProvider,
+        description: message ?? "Are you sure?",
+        widthOverride: 400,
+        overrideActions: [
+          TextButton(
+            child: Text(cancelButtonText ?? 'cancel'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: Text(confirmButtonText ?? 'confirm'),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+        actionAlignment: actionAlignment,
+    );
+
+
+    ///archived for generic dialog
     AnimationController? hoverAnimationController = tickerProvider != null ? AnimationController(vsync: tickerProvider) : null;
     return showDialog<bool>(
       context: context,
@@ -462,63 +483,65 @@ class AppUiElements {
       builder: (BuildContext context) {
         return Dialog(
           constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8, maxWidth: widthOverride ?? MediaQuery.of(context).size.width * 0.8),
-          child: Container(
-            padding: AppTheme().getAppPadding(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 16,
-              children: [
-                if (disableHeading == false)
-                  Padding(
-                    padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0, bottom: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 8,
-                      children: [
-                        Row(
-                          spacing: 16,
-                          children: [
-                            if(closeIcon == true)
-                              InkWell(
-                                borderRadius: BorderRadius.circular(100),
-                                onTap: () => Navigator.of(context).pop(false),
-                                child: Icon(Icons.close, size: 24, color: Colors.black54),
-                              ),
+          child: glassContainer(
+            child: Container(
+              padding: AppTheme().getAppPadding(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 16,
+                children: [
+                  if (disableHeading == false)
+                    Padding(
+                      padding: AppTheme().getAppPadding().copyWith(left: 0, right: 0, top: 0, bottom: 8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
+                        children: [
+                          Row(
+                            spacing: 16,
+                            children: [
+                              if(closeIcon == true)
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(100),
+                                  onTap: () => Navigator.of(context).pop(false),
+                                  child: Icon(Icons.close, size: 24, color: Colors.black54),
+                                ),
 
-                            if (disableIcon == false && hoverAnimationController != null)
-                              Lottie.asset(
-                                lottieIconOverride ?? "assets/lotties/main-check.json",
-                                controller: hoverAnimationController,
-                                width: iconSizeOverride ?? 32,
-                                height: iconSizeOverride ?? 32,
-                                onLoaded: (p0) {
-                                  hoverAnimationController?.duration = p0.duration;
-                                  hoverAnimationController?.reset();
-                                  hoverAnimationController?.forward().then((value) => hoverAnimationController?.stop());
-                                },
-                              ),
-                            Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
-                          ],
-                        ),
+                              if (disableIcon == false && hoverAnimationController != null)
+                                Lottie.asset(
+                                  lottieIconOverride ?? "assets/lotties/main-check.json",
+                                  controller: hoverAnimationController,
+                                  width: iconSizeOverride ?? 32,
+                                  height: iconSizeOverride ?? 32,
+                                  onLoaded: (p0) {
+                                    hoverAnimationController?.duration = p0.duration;
+                                    hoverAnimationController?.reset();
+                                    hoverAnimationController?.forward().then((value) => hoverAnimationController?.stop());
+                                  },
+                                ),
+                              Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
+                            ],
+                          ),
 
-                        if (description != null) ...[
-                          Text(description),
-                        ]
-                      ],
+                          if (description != null) ...[
+                            Text(description),
+                          ]
+                        ],
+                      ),
                     ),
+
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        //padding: description != null ? AppTheme().getAppPadding().copyWith(left: 0, right: 0, bottom: 0) : null,
+                        child: contentOverride ?? Text(title ?? ""),
+                      )
+                    )
                   ),
 
-                Flexible(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      //padding: description != null ? AppTheme().getAppPadding().copyWith(left: 0, right: 0, bottom: 0) : null,
-                      child: contentOverride ?? Text(title ?? ""),
-                    )
-                  )
-                ),
-
-                if (overrideActions != null) Row(spacing: actionSpacing ?? 8, mainAxisAlignment: actionAlignment ?? MainAxisAlignment.center, children: overrideActions),
-              ],
+                  if (overrideActions != null) Row(spacing: actionSpacing ?? 8, mainAxisAlignment: actionAlignment ?? MainAxisAlignment.center, children: overrideActions),
+                ],
+              ),
             ),
           ),
         );
