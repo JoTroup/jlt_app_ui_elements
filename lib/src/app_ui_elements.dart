@@ -549,12 +549,13 @@ class AppUiElements {
     );
   }
 
-  Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool numericOnly = true, bool keyboardTypeToggle = false}) {
+  Widget getKeyboardWidget({required Function setState, required fieldController, required Function submit, bool specialCharacters = false, bool numericOnly = true, bool keyboardTypeToggle = false}) {
     return _CustomKeyboardWidget(
       tenderEntryController: fieldController,
       submit: submit,
       numericOnly: numericOnly,
       keyboardTypeToggle: keyboardTypeToggle,
+      specialCharacters: null,
     );
   }
 
@@ -568,8 +569,9 @@ class _CustomKeyboardWidget extends StatefulWidget {
   final TextEditingController tenderEntryController;
   final Function submit;
   final bool numericOnly;
+  final bool specialCharacters;
   final bool keyboardTypeToggle;
-  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, required this.keyboardTypeToggle});
+  const _CustomKeyboardWidget({required this.tenderEntryController, required this.submit, required this.numericOnly, required this.specialCharacters, required this.keyboardTypeToggle});
 
   @override
   State<_CustomKeyboardWidget> createState() => _CustomKeyboardWidgetState();
@@ -602,7 +604,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     widget.submit();
   }
 
-  static const numericCharacters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
+  List numericCharacters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', if (widget.specialCharacters) '.'];
   static const qwertyCharacters = [
     // Row 1
     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
