@@ -555,7 +555,7 @@ class AppUiElements {
       submit: submit,
       numericOnly: numericOnly,
       keyboardTypeToggle: keyboardTypeToggle,
-      specialCharacters: null,
+      specialCharacters: specialCharacters,
     );
   }
 
@@ -604,7 +604,7 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
     widget.submit();
   }
 
-  List numericCharacters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', if (widget.specialCharacters) '.'];
+  late List numericCharacters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', if (widget.specialCharacters) '.'];
   static const qwertyCharacters = [
     // Row 1
     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
