@@ -644,16 +644,18 @@ class _CustomKeyboardWidgetState extends State<_CustomKeyboardWidget> {
         itemBuilder: (context, index) {
           final char = characters[index];
           if (char.isEmpty) return SizedBox.shrink();
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              backgroundColor: AppTheme().getPrimaryBackgroundColour(),
-              padding: EdgeInsets.zero,
-            ),
-            onPressed: () => onKeyboardTap(char),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18)),
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => onKeyboardTap(char),
+              borderRadius: AppTheme().getAppRadius()/2,
+              child: AppUiElements().glassContainer(
+                borderRadius: AppTheme().getAppRadius()/2,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(char, style: TextStyle(fontSize: isQwerty ? 14 : 18)),
+                ),
+              ),
             ),
           );
         },
