@@ -508,16 +508,22 @@ class AppUiElements {
                                 ),
 
                               if (disableIcon == false && hoverAnimationController != null)
-                                Lottie.asset(
-                                  lottieIconOverride ?? "assets/lotties/main-check.json",
-                                  controller: hoverAnimationController,
-                                  width: iconSizeOverride ?? 32,
-                                  height: iconSizeOverride ?? 32,
-                                  onLoaded: (p0) {
-                                    hoverAnimationController?.duration = p0.duration;
-                                    hoverAnimationController?.reset();
-                                    hoverAnimationController?.forward().then((value) => hoverAnimationController?.stop());
-                                  },
+                                ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    AppTheme().getPrimaryAccentColour(),
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Lottie.asset(
+                                    lottieIconOverride ?? "assets/lotties/main-check.json",
+                                    controller: hoverAnimationController,
+                                    width: iconSizeOverride ?? 32,
+                                    height: iconSizeOverride ?? 32,
+                                    onLoaded: (p0) {
+                                      hoverAnimationController?.duration = p0.duration;
+                                      hoverAnimationController?.reset();
+                                      hoverAnimationController?.forward().then((value) => hoverAnimationController?.stop());
+                                    },
+                                  ),
                                 ),
                               Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
                             ],
