@@ -390,7 +390,16 @@ class AppUiElements {
     return genericDialog(
         context: context,
         tickerProvider: tickerProvider,
-        description: message ?? "Are you sure?",
+        iconSizeOverride: 70,
+        contentOverride: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Expanded(child: Text(message ?? "", softWrap: true, style: AppTheme().getH3TextStyle(),))],
+            ),
+          ],
+        ),
         widthOverride: 400,
         overrideActions: [
           TextButton(
@@ -463,6 +472,7 @@ class AppUiElements {
     TickerProvider? tickerProvider,
     bool disableIcon = false,
     bool disableHeading = false,
+    MainAxisAlignment headingAlignment = MainAxisAlignment.start,
     String? lottieIconOverride,
     double? iconSizeOverride,
     bool? closeIcon,
@@ -498,6 +508,7 @@ class AppUiElements {
                         spacing: 8,
                         children: [
                           Row(
+                            mainAxisAlignment: headingAlignment,
                             spacing: 16,
                             children: [
                               if(closeIcon == true)
@@ -525,7 +536,8 @@ class AppUiElements {
                                     },
                                   ),
                                 ),
-                              Expanded(child: Text(title ?? "", style: AppTheme().getH2TextStyle())),
+                              if(title != null)
+                                Expanded(child: Text(title, style: AppTheme().getH2TextStyle())),
                             ],
                           ),
 
