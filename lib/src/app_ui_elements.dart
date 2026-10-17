@@ -391,12 +391,15 @@ class AppUiElements {
         context: context,
         tickerProvider: tickerProvider,
         iconSizeOverride: 70,
+        headingAlignment: MainAxisAlignment.center,
         contentOverride: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Expanded(child: Text(message ?? "", softWrap: true, style: AppTheme().getH3TextStyle(),))],
+              children: [Expanded(child: Text(message ?? "", softWrap: true, style: AppTheme().getH3TextStyle(), textAlign: TextAlign.center,))],
             ),
           ],
         ),
