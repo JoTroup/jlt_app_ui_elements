@@ -855,11 +855,13 @@ class SideNavBar extends StatefulWidget {
   final Color? backgroundColor;
   final EdgeInsets? marginOverride;
   final EdgeInsets? paddingOverride;
+  final MainAxisAlignment primaryActionsAlignment;
 
   const SideNavBar({
     super.key,
     required this.sideBarController,
     required this.primaryActions,
+    this.primaryActionsAlignment = MainAxisAlignment.center,
     required this.settingsActions,
     required this.logoAssetPath,
     this.appName,
@@ -984,36 +986,40 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                 ),
               ),
 
-              Expanded(child: Container()),
 
-              Wrap(
-                direction: Axis.vertical,
-                children: List.generate(widget.primaryActions.length, (index) {
-                  final action = widget.primaryActions[index];
-                  return AppUiElements().animatedNavButton(
-                    context: context,
-                    onTap: () {
-                      AppUiElements().handleNavigationChange(
-                        selectedIndex: index,
-                        updateMenu: widget.setState,
-                        replacementWidget: action.widget,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: widget.primaryActionsAlignment,
+                children: [
+                  Wrap(
+                    direction: Axis.vertical,
+                    children: List.generate(widget.primaryActions.length, (index) {
+                      final action = widget.primaryActions[index];
+                      return AppUiElements().animatedNavButton(
                         context: context,
-                        mounted: widget.mounted,
-                        sideBarController: sideBarController,
+                        onTap: () {
+                          AppUiElements().handleNavigationChange(
+                            selectedIndex: index,
+                            updateMenu: widget.setState,
+                            replacementWidget: action.widget,
+                            context: context,
+                            mounted: widget.mounted,
+                            sideBarController: sideBarController,
+                          );
+                        },
+                        hoverAnimationController: primaryControllers[index],
+                        lottieString: action.lottieStringAssetPath,
+                        setState: widget.setState,
+                        selectedHighlightRightIndex: index,
+                        menuNameString: action.name,
+                        expandedMenuTitle: sideBarController.isExpanded,
+                        isCompactView: sideBarController.isCompactDevice,
                       );
-                    },
-                    hoverAnimationController: primaryControllers[index],
-                    lottieString: action.lottieStringAssetPath,
-                    setState: widget.setState,
-                    selectedHighlightRightIndex: index,
-                    menuNameString: "",
-                    expandedMenuTitle: sideBarController.isExpanded,
-                    isCompactView: sideBarController.isCompactDevice,
-                  );
-                }),
+                    }),
+                  ),
+                ],
               ),
 
-              Expanded(child: Container()),
 
               if (!AppTheme().isDeviceSmall() && widget.isExpandable)
                 Row(
@@ -1047,7 +1053,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                     hoverAnimationController: settingsControllers[index],
                     lottieString: action.lottieStringAssetPath,
                     setState: widget.setState,
-                    menuNameString: "",
+                    menuNameString: widget.settingsActions[index].name,
                     expandedMenuTitle: sideBarController.isExpanded,
                     isCompactView: sideBarController.isCompactDevice,
                   );
