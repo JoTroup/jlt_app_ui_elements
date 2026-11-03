@@ -48,7 +48,7 @@ class SideBarLottieButton {
 
 class AppUiElements {
 
-  Widget appLogo({double? fontSize}) {
+  Widget appLogo({double? fontSize, bool animated = true}) {
     return Row(
       key: const ValueKey("app_logo"),
       spacing: 4,
@@ -57,14 +57,9 @@ class AppUiElements {
       crossAxisAlignment: CrossAxisAlignment.baseline,
 
       children: [
-        RevealText(key: const ValueKey("app_name"), text: '${AppTheme().appName}', letterSpacing: -3, textStyle: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24), animateBy: AnimationType.letters,),
+        animated ? RevealText(key: const ValueKey("app_name"), text: '${AppTheme().appName}', letterSpacing: -3, textStyle: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24), animateBy: AnimationType.letters,) : Text('${AppTheme().appName}', style: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24)),
         Container(
-          /*decoration: BoxDecoration(
-            color: Colors.black.withAlpha(20),
-            borderRadius:AppTheme().getAppRadius(),
-          ),
-            padding: EdgeInsets.only(left: 16, right: 16, top: 2, bottom: 2),*/
-            child: RevealText(key: const ValueKey("app_tagline"), text: "${AppTheme().appTagline}", textStyle: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100), animateBy: AnimationType.words,)
+            child: animated ? RevealText(key: const ValueKey("app_tagline"), text: "${AppTheme().appTagline}", textStyle: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100), animateBy: AnimationType.words,) : Text("${AppTheme().appTagline}", style: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100),)
         )
       ],
     );
