@@ -974,22 +974,20 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                           Image.asset(widget.logoAssetPath, width: 36, height: 36),
                       ],
 
-                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
-                      curve: Curves.easeInOut,
-                      width: sideBarController.isExpanded ? 220 : 0,
-                      child: ClipRect(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
+                   AnimatedSize(
+                      duration: const Duration(milliseconds: 100),
+                      child: SizedBox(
+                        width: sideBarController.isExpanded ? null : 0,
+                        child: ClipRect(
                           child: sideBarController.isExpanded
                               ? (widget.appName != null
                                   ? Text(
+                                      key: ValueKey('app_name_${widget.appName}_${sideBarController.isExpanded}'),
                                       widget.appName!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                       style: AppTheme().getH2TextStyle(
                                         subHeading: true,
                                         color: Colors.black87,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     )
                                   : AppUiElements().appLogo(fontSize: widget.appNameFontSize))
