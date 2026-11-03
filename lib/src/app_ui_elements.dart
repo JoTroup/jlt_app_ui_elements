@@ -39,10 +39,11 @@ class SideBarController {
 class SideBarLottieButton {
   final String name;
   final String lottieStringAssetPath;
+  double? sizeOverride;
   Widget widget = Container();
   Function? onTap;
 
-  SideBarLottieButton({required this.name, required this.lottieStringAssetPath, required this.widget, this.onTap});
+  SideBarLottieButton({required this.name, required this.lottieStringAssetPath, required this.widget, this.onTap, this.sizeOverride});
 }
 
 class AppUiElements {
@@ -910,6 +911,8 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
               final action = widget.primaryActions[index];
               return AppUiElements().animatedNavButton(
                 context: context,
+                widthOverride: action.sizeOverride,
+                heightOverride: action.sizeOverride,
                 onTap: () {
                   AppUiElements().handleNavigationChange(
                     selectedIndex: index,
@@ -998,6 +1001,8 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                         final action = widget.primaryActions[index];
                         return AppUiElements().animatedNavButton(
                           context: context,
+                          widthOverride: action.sizeOverride,
+                          heightOverride: action.sizeOverride,
                           onTap: () {
                             AppUiElements().handleNavigationChange(
                               selectedIndex: index,
@@ -1049,6 +1054,8 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                   final action = widget.settingsActions[index];
                   return AppUiElements().animatedNavButton(
                     context: context,
+                    widthOverride: action.sizeOverride,
+                    heightOverride: action.sizeOverride,
                     onTap: () {
                       if (action.onTap != null) action.onTap!();
                     },
