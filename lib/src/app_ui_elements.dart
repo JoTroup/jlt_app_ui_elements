@@ -50,20 +50,21 @@ class AppUiElements {
 
   Widget appLogo({double? fontSize}) {
     return Row(
+      key: const ValueKey("app_logo"),
       spacing: 4,
       mainAxisSize: MainAxisSize.min,
       textBaseline: TextBaseline.alphabetic,
       crossAxisAlignment: CrossAxisAlignment.baseline,
 
       children: [
-        RevealText(text: '${AppTheme().appName}', letterSpacing: -3, textStyle: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24), animateBy: AnimationType.letters,),
+        RevealText(key: const ValueKey("app_name"), text: '${AppTheme().appName}', letterSpacing: -3, textStyle: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24), animateBy: AnimationType.letters,),
         Container(
           /*decoration: BoxDecoration(
             color: Colors.black.withAlpha(20),
             borderRadius:AppTheme().getAppRadius(),
           ),
             padding: EdgeInsets.only(left: 16, right: 16, top: 2, bottom: 2),*/
-            child: RevealText(text: "${AppTheme().appTagline}", textStyle: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100), animateBy: AnimationType.words,)
+            child: RevealText(key: const ValueKey("app_tagline"), text: "${AppTheme().appTagline}", textStyle: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100), animateBy: AnimationType.words,)
         )
       ],
     );
@@ -979,6 +980,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                         width: sideBarController.isExpanded ? null : 0,
                         child: ClipRect(
                           child: widget.appName != null ? RevealText(
+                            key: ValueKey("${widget.appName}_generated"),
                             text: widget.appName!,
                             textStyle: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
                           ) : AppUiElements().appLogo(fontSize: widget.appNameFontSize),
