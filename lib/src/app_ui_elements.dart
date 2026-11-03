@@ -985,7 +985,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )
-                                  : AppUiElements().appLogo(fontSize: widget.appNameFontSize))
+                                  : AppUiElements().appLogo(fontSize: widget.appNameFontSize, animated: false))
                               : const SizedBox.shrink(),
                         ),
                       ),
