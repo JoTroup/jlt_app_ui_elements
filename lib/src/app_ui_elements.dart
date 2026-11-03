@@ -3,6 +3,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:jlt_app_theme_handler/jlt_app_theme_handler.dart';
 import 'package:lottie/lottie.dart';
+import 'package:reveal_text/reveal_text.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 import 'package:wave_widget/wave_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,6 +46,28 @@ class SideBarLottieButton {
 }
 
 class AppUiElements {
+
+  Widget appLogo({double? fontSize}) {
+    return Row(
+      spacing: 4,
+      mainAxisSize: MainAxisSize.min,
+      textBaseline: TextBaseline.alphabetic,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+
+      children: [
+        RevealText(text: '${AppTheme().appName}', letterSpacing: -3, textStyle: AppTheme().getAppLogoTextStyle().copyWith(fontSize: fontSize ?? 24), animateBy: AnimationType.letters,),
+        Container(
+          /*decoration: BoxDecoration(
+            color: Colors.black.withAlpha(20),
+            borderRadius:AppTheme().getAppRadius(),
+          ),
+            padding: EdgeInsets.only(left: 16, right: 16, top: 2, bottom: 2),*/
+            child: RevealText(text: "${AppTheme().appTagline}", textStyle: AppTheme().getAppLogoSubtitleTextStyle().copyWith(fontSize: fontSize ?? 24, fontWeight: FontWeight.w100), animateBy: AnimationType.words,)
+        )
+      ],
+    );
+  }
+
   BoxConstraints getAppWidthConstraints({double addWidth = 0}) {
     return BoxConstraints(maxWidth: 700 + addWidth);
   }
@@ -824,7 +847,8 @@ class SideNavBar extends StatefulWidget {
   final List<SideBarLottieButton> primaryActions;
   final List<SideBarLottieButton> settingsActions;
   final String logoAssetPath;
-  final String appName;
+  final String? appName;
+  final double? appNameFontSize;
   final Function setState;
   final bool isExpandable;
   final bool mounted;
@@ -838,7 +862,8 @@ class SideNavBar extends StatefulWidget {
     required this.primaryActions,
     required this.settingsActions,
     required this.logoAssetPath,
-    required this.appName,
+    this.appName,
+    this.appNameFontSize,
     required this.setState,
     required this.mounted,
     this.isExpandable = true,
@@ -948,12 +973,10 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                       child: SizedBox(
                         width: sideBarController.isExpanded ? null : 0,
                         child: ClipRect(
-                          child: Text(
-                            widget.appName.toUpperCase(),
-                            overflow: TextOverflow.clip,
-                            softWrap: false,
-                            style: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
-                          ),
+                          child: widget.appName != null ? RevealText(
+                            text: widget.appName!,
+                            textStyle: AppTheme().getH2TextStyle(subHeading: true, color: Colors.black87)
+                          ) : AppUiElements().appLogo(fontSize: widget.appNameFontSize),
                         ),
                       ),
                     ),
