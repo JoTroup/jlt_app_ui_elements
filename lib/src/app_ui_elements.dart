@@ -945,7 +945,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: sideBarController.isExpanded ? EdgeInsets.only(left: 0, right: 0, top: 24, bottom: 24) : EdgeInsets.all(24),
+                padding: sideBarController.isExpanded ? AppTheme().getAppPadding().copyWith(top: 24, bottom: 24) : EdgeInsets.all(24),
                 child: Wrap(
                   spacing: sideBarController.isExpanded ? 16 : 0,
                   alignment: WrapAlignment.center,
