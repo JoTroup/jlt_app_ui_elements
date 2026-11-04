@@ -230,36 +230,40 @@ class AppUiElements {
                 hoverAnimationController.forward().then((value) => hoverAnimationController.reset());
               }
             },
-            child: Padding(
-              padding: EdgeInsets.only(left: AppTheme().getAppPadding().left, right: AppTheme().getAppPadding().right, top: AppTheme().getAppPadding().top / 2, bottom: AppTheme().getAppPadding().bottom / 2),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
-                children: [
-                  Lottie.asset(
-                    lottieString,
-                    width: widthOverride ?? 32,
-                    height: heightOverride ?? 32,
-                    controller: hoverAnimationController,
-                    onLoaded: (p0) {
-                      setState(() {
-                        hoverAnimationController.duration = p0.duration;
-                      });
-                    },
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: AppTheme().getAppPadding().left, right: AppTheme().getAppPadding().right, top: AppTheme().getAppPadding().top / 2, bottom: AppTheme().getAppPadding().bottom / 2),
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        lottieString,
+                        width: widthOverride ?? 32,
+                        height: heightOverride ?? 32,
+                        controller: hoverAnimationController,
+                        onLoaded: (p0) {
+                          setState(() {
+                            hoverAnimationController.duration = p0.duration;
+                          });
+                        },
+                      ),
+                      if (expandedMenuTitle) Container(width: 10),
+                      AnimatedSize(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.fastEaseInToSlowEaseOut,
+                        child: Container(
+                          constraints: BoxConstraints(minWidth: expandedMenuTitle ? 125 : 0, maxWidth: expandedMenuTitle ? 150 : 0),
+                          width: expandedMenuTitle ? null : 0,
+                          height: expandedMenuTitle ? null : 0,
+                          child: ClipRect(child: Text(expandedMenuTitle ? menuNameString : "")),
+                        ),
+                      ),
+                    ],
                   ),
-                  if (expandedMenuTitle) Container(width: 10),
-                  AnimatedSize(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                    child: Container(
-                      constraints: BoxConstraints(minWidth: expandedMenuTitle ? 125 : 0, maxWidth: expandedMenuTitle ? 150 : 0),
-                      width: expandedMenuTitle ? null : 0,
-                      height: expandedMenuTitle ? null : 0,
-                      child: ClipRect(child: Text(expandedMenuTitle ? menuNameString : "")),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -999,9 +1003,9 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: widget.primaryActionsAlignment,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Wrap(
-                      direction: Axis.vertical,
+                    Column(
                       children: List.generate(widget.primaryActions.length, (index) {
                         final action = widget.primaryActions[index];
                         return AppUiElements().animatedNavButton(
