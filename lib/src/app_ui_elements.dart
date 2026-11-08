@@ -223,15 +223,16 @@ class AppUiElements {
     double? widthOverride,
     double? heightOverride,
     int? selectedHighlightRightIndex,
+    Axis direction = Axis.vertical,
   }) {
     return Material(
       color: Colors.transparent,
       child: Stack(
-        alignment: isCompactView ? Alignment.topCenter : Alignment.centerRight,
+        alignment: isCompactView ? Alignment.topCenter : direction == Axis.horizontal ? Alignment.bottomCenter : Alignment.centerRight,
         children: [
           if (selectedHighlightRightIndex != null)
             RotatedBox(
-              quarterTurns: isCompactView ? 1 : 0,
+              quarterTurns: isCompactView || direction == Axis.horizontal ? 1 : 0,
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
@@ -876,12 +877,14 @@ class SideNavBar extends StatefulWidget {
   final EdgeInsets? marginOverride;
   final EdgeInsets? paddingOverride;
   final MainAxisAlignment primaryActionsAlignment;
+  final Axis direction;
 
   const SideNavBar({
     super.key,
     required this.sideBarController,
     required this.primaryActions,
     this.primaryActionsAlignment = MainAxisAlignment.center,
+    this.direction = Axis.vertical,
     required this.settingsActions,
     required this.logoAssetPath,
     this.appName,
@@ -925,7 +928,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Wrap(
-            direction: Axis.vertical,
+            direction: widget.direction,
             children: List.generate(widget.primaryActions.length, (index) {
               final action = widget.primaryActions[index];
               return AppUiElements().animatedNavButton(
@@ -949,6 +952,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                 menuNameString: "",
                 expandedMenuTitle: false,
                 isCompactView: sideBarController.isCompactDevice,
+                direction: widget.direction,
               );
             }),
           ),
@@ -961,8 +965,11 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
       child: AppUiElements().glassContainer(
         backgroundColor: widget.backgroundColor,
         child: Container(
-          padding: widget.paddingOverride ?? AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2,
-          child: Column(
+          padding: widget.paddingOverride ?? (widget.direction == Axis.horizontal
+              ? AppTheme().getAppPadding().copyWith(top: 0, bottom: 0)/2
+              : AppTheme().getAppPadding().copyWith(left: 0, right: 0)/2),
+          child: Flex(
+            direction: widget.direction,
             spacing: 16,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -1019,38 +1026,52 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
 
 
               Expanded(
-                child: Column(
+                child: Flex(
+                  direction: widget.direction,
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: widget.primaryActionsAlignment,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: List.generate(widget.primaryActions.length, (index) {
-                        final action = widget.primaryActions[index];
-                        return AppUiElements().animatedNavButton(
-                          context: context,
-                          widthOverride: action.sizeOverride,
-                          heightOverride: action.sizeOverride,
-                          onTap: () {
-                            AppUiElements().handleNavigationChange(
-                              selectedIndex: index,
-                              updateMenu: widget.setState,
-                              replacementWidget: action.widget,
-                              context: context,
-                              mounted: widget.mounted,
-                              sideBarController: sideBarController,
-                            );
-                          },
-                          hoverAnimationController: primaryControllers[index],
-                          lottieString: action.lottieStringAssetPath,
-                          setState: widget.setState,
-                          selectedHighlightRightIndex: index,
-                          menuNameString: action.name,
-                          expandedMenuTitle: sideBarController.isExpanded,
-                          isCompactView: sideBarController.isCompactDevice,
-                        );
-                      }),
-                    ),
+                    Builder(builder: (context) {
+                      final actions = Flex(
+                        direction: widget.direction,
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(widget.primaryActions.length, (index) {
+                          final action = widget.primaryActions[index];
+                          return AppUiElements().animatedNavButton(
+                            context: context,
+                            widthOverride: action.sizeOverride,
+                            heightOverride: action.sizeOverride,
+                            onTap: () {
+                              AppUiElements().handleNavigationChange(
+                                selectedIndex: index,
+                                updateMenu: widget.setState,
+                                replacementWidget: action.widget,
+                                context: context,
+                                mounted: widget.mounted,
+                                sideBarController: sideBarController,
+                              );
+                            },
+                            hoverAnimationController: primaryControllers[index],
+                            lottieString: action.lottieStringAssetPath,
+                            setState: widget.setState,
+                            selectedHighlightRightIndex: index,
+                            menuNameString: action.name,
+                            expandedMenuTitle: sideBarController.isExpanded,
+                            isCompactView: sideBarController.isCompactDevice,
+                            direction: widget.direction,
+                          );
+                        }),
+                      );
+                      return widget.direction == Axis.horizontal
+                          ? Flexible(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: actions,
+                              ),
+                            )
+                          : actions;
+                    }),
                   ],
                 ),
               ),
@@ -1069,7 +1090,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                               sideBarController.isExpanded = !sideBarController.isExpanded;
                             });
                           },
-                          icon: Icon(Icons.arrow_left, color: Colors.black38),
+                          icon: Icon(widget.direction == Axis.horizontal ? Icons.arrow_upward : Icons.arrow_left, color: Colors.black38),
                         ),
                       ),
                     ),
@@ -1077,7 +1098,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                 ),
 
               Wrap(
-                direction: Axis.vertical,
+                direction: widget.direction,
                 children: List.generate(widget.settingsActions.length, (index) {
                   final action = widget.settingsActions[index];
                   return AppUiElements().animatedNavButton(
@@ -1093,6 +1114,7 @@ class _SideNavBarState extends State<SideNavBar> with TickerProviderStateMixin {
                     menuNameString: widget.settingsActions[index].name,
                     expandedMenuTitle: sideBarController.isExpanded,
                     isCompactView: sideBarController.isCompactDevice,
+                    direction: widget.direction,
                   );
                 }),
               ),

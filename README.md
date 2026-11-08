@@ -5,7 +5,7 @@ A Flutter package providing default app UI elements for the JLT software suite. 
 ## Features
 
 - Animated navigation button with Lottie animation support
-- Sidebar navigation bar supporting compact and expanded layouts
+- Sidebar navigation bar supporting vertical or horizontal, compact and expanded layouts
 - Theme integration via [jlt_app_theme_handler](https://github.com/JoTroup/jlt_app_theme_handler)
 - SVG asset support
 - Wave widget integration
@@ -45,23 +45,29 @@ Widget navButton = appUi.animatedNavButton(
   selectedHighlightRightIndex: 1,
 );
 
-Widget sideNavBar = appUi.sideNavBar(
+Widget sideNavBar = SideNavBar(
   sideBarController: sideBarController,
+  direction: Axis.horizontal, // Omit for the default vertical sidebar.
+  logoAssetPath: 'assets/logo.svg',
   primaryActions: [
-    {
-      "widget": MyPageWidget(),
-      "controller": AnimationController(vsync: this),
-      "icon": "assets/animation.json",
-    },
+    SideBarLottieButton(
+      name: 'Home',
+      widget: MyPageWidget(),
+      lottieStringAssetPath: 'assets/animation.json',
+    ),
     // Add more actions as needed
   ],
   settingsActions: [],
-  context: context,
-  tickerProvider: this,
   setState: setState,
   mounted: mounted,
 );
 ```
+
+Give a horizontal bar a bounded width (for example, the screen width) and
+enough height for its logo and buttons. `primaryActionsAlignment` applies along
+the selected axis. Expansion still controls whether action labels are visible;
+compact mode arranges its primary icons along the selected axis.
+Horizontal primary actions scroll when they exceed the available width.
 
 ## Example
 
