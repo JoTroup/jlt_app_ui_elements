@@ -81,7 +81,7 @@ class AppUiElements {
         )
       ];
     } else {
-      calculatedBoxShadow = [
+      calculatedBoxShadow = boxShadow ?? [
         BoxShadow(
           color: Colors.black.withAlpha(10),
           blurRadius: 5,
