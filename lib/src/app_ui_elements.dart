@@ -69,10 +69,31 @@ class AppUiElements {
     return BoxConstraints(maxWidth: 700 + addWidth);
   }
 
-  Widget glassContainer({required Widget child, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
+  Widget glassContainer({Function()? onTap, required Widget child, EdgeInsets? padding, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, Color? glassColor, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
     BorderRadius calculatedBorderRadius = borderRadius ?? AppTheme().getAppRadius() * 2;
     List<BoxShadow> calculatedBoxShadow;
-    Color calculatedBackgroundColor = backgroundColor ?? Colors.white.withAlpha(140);
+    if(glassColor != null) {
+      calculatedBoxShadow = [
+        BoxShadow(
+          color: glassColor.withAlpha(50),
+          blurRadius: 10,
+          offset: const Offset(0, 10),
+        )
+      ];
+    } else {
+      calculatedBoxShadow = [
+        BoxShadow(
+          color: Colors.black.withAlpha(10),
+          blurRadius: 10,
+          offset: const Offset(0, 10),
+        )
+      ];
+    }
+    Color calculatedBackgroundColor = Colors.white.withAlpha(140);
+    if(glassColor == null) {
+      calculatedBackgroundColor = backgroundColor ?? Colors.white.withAlpha(140);
+    }
+    padding = padding ?? EdgeInsets.zero;
 
     if (boxShadow == null) {
       calculatedBoxShadow = [
@@ -86,15 +107,26 @@ class AppUiElements {
       calculatedBoxShadow = boxShadow;
     }
 
-    Widget content = Container(
-      decoration: BoxDecoration(
+    Widget content = Material(
+      color: Colors.transparent,
+      borderRadius: calculatedBorderRadius,
+      child: InkWell(
         borderRadius: calculatedBorderRadius,
-        boxShadow: calculatedBoxShadow,
-      ),
-      child: Material(
-        color: calculatedBackgroundColor,
-        borderRadius: calculatedBorderRadius,
-        child: child,
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: calculatedBorderRadius,
+            boxShadow: calculatedBoxShadow,
+          ),
+          child: Material(
+            color: calculatedBackgroundColor,
+            borderRadius: calculatedBorderRadius,
+            child: Padding(
+              padding: padding,
+              child: child,
+            ),
+          ),
+        ),
       ),
     );
 
