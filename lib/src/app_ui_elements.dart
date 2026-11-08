@@ -69,7 +69,7 @@ class AppUiElements {
     return BoxConstraints(maxWidth: 700 + addWidth);
   }
 
-  Widget glassContainer({Function()? onTap, required Widget child, EdgeInsets? padding, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, Color? glassColor, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
+  Widget glassContainer({Function()? onTap, required Widget child, EdgeInsets padding = EdgeInsets.zero, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, Color? glassColor, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
     BorderRadius calculatedBorderRadius = borderRadius ?? AppTheme().getAppRadius() * 2;
     List<BoxShadow> calculatedBoxShadow;
     if(glassColor != null) {
@@ -92,19 +92,6 @@ class AppUiElements {
     Color calculatedBackgroundColor = Colors.white.withAlpha(140);
     if(glassColor == null) {
       calculatedBackgroundColor = backgroundColor ?? Colors.white.withAlpha(140);
-    }
-    padding = padding ?? EdgeInsets.zero;
-
-    if (boxShadow == null) {
-      calculatedBoxShadow = [
-        BoxShadow(
-          color: Colors.black.withAlpha(10),
-          blurRadius: 10,
-          offset: const Offset(0, 10),
-        )
-      ];
-    } else {
-      calculatedBoxShadow = boxShadow;
     }
 
     Widget content = Material(
