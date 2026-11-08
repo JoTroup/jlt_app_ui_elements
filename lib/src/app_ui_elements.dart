@@ -76,16 +76,16 @@ class AppUiElements {
       calculatedBoxShadow = [
         BoxShadow(
           color: glassColor.withAlpha(50),
-          blurRadius: 10,
-          offset: const Offset(0, 10),
+          blurRadius: 5,
+          offset: const Offset(0, 3),
         )
       ];
     } else {
       calculatedBoxShadow = [
         BoxShadow(
           color: Colors.black.withAlpha(10),
-          blurRadius: 10,
-          offset: const Offset(0, 10),
+          blurRadius: 5,
+          offset: const Offset(0, 3),
         )
       ];
     }
