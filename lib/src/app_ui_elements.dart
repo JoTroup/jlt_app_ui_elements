@@ -528,6 +528,7 @@ class AppUiElements {
     Widget? contentOverride,
     List<Widget>? overrideActions,
     MainAxisAlignment? actionAlignment,
+    bool scrollable = true,
     double? actionSpacing,
     bool? automaticallyPop,
     double? widthOverride}) {
@@ -595,6 +596,7 @@ class AppUiElements {
                       ),
                     ),
 
+                  if(scrollable)
                   Flexible(
                     child: SingleChildScrollView(
                       child: Container(
@@ -603,6 +605,9 @@ class AppUiElements {
                       )
                     )
                   ),
+
+                  if(!scrollable)
+                    contentOverride ?? Text(title ?? ""),
 
                   if (overrideActions != null) Row(spacing: actionSpacing ?? 8, mainAxisAlignment: actionAlignment ?? MainAxisAlignment.center, children: overrideActions),
                 ],
