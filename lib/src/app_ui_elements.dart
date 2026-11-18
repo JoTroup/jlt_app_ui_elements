@@ -101,6 +101,8 @@ class AppUiElements {
         borderRadius: calculatedBorderRadius,
         onTap: onTap,
         splashColor: glassColor?.withAlpha(100),
+        focusColor: glassColor?.withAlpha(100),
+        highlightColor: glassColor?.withAlpha(100),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: calculatedBorderRadius,
