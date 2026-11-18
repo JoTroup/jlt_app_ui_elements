@@ -148,7 +148,10 @@ class AppUiElements {
         ],
       );
     }
-    return content;
+    return Padding(
+      padding: EdgeInsets.only(left: 2, right: 2, bottom: 4, top: 0),
+      child: content,
+    );
   }
 
 
