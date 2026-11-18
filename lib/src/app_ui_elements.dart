@@ -100,6 +100,7 @@ class AppUiElements {
       child: InkWell(
         borderRadius: calculatedBorderRadius,
         onTap: onTap,
+        splashColor: glassColor?.withAlpha(100),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: calculatedBorderRadius,
