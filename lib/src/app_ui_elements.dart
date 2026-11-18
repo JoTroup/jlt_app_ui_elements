@@ -99,9 +99,7 @@ class AppUiElements {
       borderRadius: calculatedBorderRadius,
       child: InkWell(
         borderRadius: calculatedBorderRadius,
-        onTap: () {
-          onTap;
-        },
+        onTap: onTap != null ? () => onTap(null) : null,
         splashColor: glassColor?.withAlpha(100),
         focusColor: glassColor?.withAlpha(100),
         highlightColor: glassColor?.withAlpha(100),
