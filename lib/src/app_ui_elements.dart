@@ -69,7 +69,7 @@ class AppUiElements {
     return BoxConstraints(maxWidth: 700 + addWidth);
   }
 
-  Widget glassContainer({Function()? onTap, required Widget child, EdgeInsets padding = EdgeInsets.zero, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, Color? glassColor, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
+  Widget glassContainer({Function(dynamic updateView)? onTap, required Widget child, EdgeInsets padding = EdgeInsets.zero, BorderRadius? borderRadius, List<BoxShadow>? boxShadow, Color? glassColor, bool? withBubbleBackground, int backgroundRotationTurns = 0, int backgroundBottomOffset = 0, Color? backgroundColor}) {
     BorderRadius calculatedBorderRadius = borderRadius ?? AppTheme().getAppRadius() * 2;
     List<BoxShadow> calculatedBoxShadow;
     if(glassColor != null) {
@@ -99,7 +99,9 @@ class AppUiElements {
       borderRadius: calculatedBorderRadius,
       child: InkWell(
         borderRadius: calculatedBorderRadius,
-        onTap: onTap,
+        onTap: () {
+          onTap;
+        },
         splashColor: glassColor?.withAlpha(100),
         focusColor: glassColor?.withAlpha(100),
         highlightColor: glassColor?.withAlpha(100),
