@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:jlt_app_theme_handler/jlt_app_theme_handler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:reveal_text/reveal_text.dart';

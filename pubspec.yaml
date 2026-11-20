@@ -1,6 +1,6 @@
 name: jlt_app_ui_elements
 description: "A package that contains default app elements for JLT software suite."
-version: 0.5.2
+version: 1.0.0
 publish_to: none
 
 homepage:
@@ -21,7 +21,7 @@ dependencies:
   reveal_text: ^1.0.0
   tinycolor2: ^3.0.1
   rounded_loading_button_plus: ^3.0.1
-
+  material_ui: ^1.11.1
 
 
   jlt_app_theme_handler:
