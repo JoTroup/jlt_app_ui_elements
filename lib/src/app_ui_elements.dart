@@ -140,6 +140,7 @@ class AppUiElements {
                     child: Lottie.asset(
                       frameRate: const FrameRate(60),
                       'assets/lotties/bubbles_lottie.json',
+                      package: 'jlt_app_ui_elements',
                       fit: BoxFit.cover,
                     ),
                   ),
