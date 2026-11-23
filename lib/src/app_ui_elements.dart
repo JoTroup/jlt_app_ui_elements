@@ -152,7 +152,7 @@ class AppUiElements {
         ],
       );
     }
-    return content;
+    return Positioned.fill(child: content);
   }
 
 
