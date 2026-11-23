@@ -148,11 +148,16 @@ class AppUiElements {
               ),
             ),
           ),
-          content,
+          Positioned.fill(
+            child: Container(
+              constraints: getAppWidthConstraints(),
+              child: content,
+            ),
+          ),
         ],
       );
     }
-    return Expanded(child: content);
+    return content;
   }
 
 
